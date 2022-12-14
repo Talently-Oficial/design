@@ -12,5 +12,8 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.1.3",
     "nuxt": "3.0.0"
+  },
+  "dependencies": {
+    "@nuxt-themes/docus": "^1.1.4"
   }
 }
