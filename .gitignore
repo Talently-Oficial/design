@@ -101,3 +101,4 @@ cypress/downloads
 *.log*
 .nitro
 .output
+tailwind-viewer
