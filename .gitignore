@@ -102,3 +102,6 @@ cypress/downloads
 .nitro
 .output
 tailwind-viewer
+
+.nuxt-storybook
+storybook-static
