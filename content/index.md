@@ -43,7 +43,7 @@ What's included
   Components.
 
   #description
-  Use built-in components (or your own!) inside your content. [Ver storybook](https://design.talently.tech//storybook)
+  Use built-in components (or your own!) inside your content. [Ver storybook](https://design.talently.tech/storybook)
   ::
 
   ::card
@@ -51,7 +51,7 @@ What's included
   Configuración de tailwind
 
   #description
-  Enjoy the ease and simplicity of Markdown and discover MDC syntax. [Ver tailwind](https://design.talently.tech//tailwind-viewer)
+  Enjoy the ease and simplicity of Markdown and discover MDC syntax. [Ver tailwind](https://design.talently.tech/tailwind-viewer)
   ::
 ::
 
