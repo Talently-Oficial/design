@@ -20,9 +20,10 @@
     "@storybook/vue3": "^6.5.14",
     "babel-loader": "^8.3.0",
     "nuxt": "3.0.0",
+    "storybook-dark-mode": "^2.0.4",
     "vue-loader": "^16.8.3"
   },
   "dependencies": {
-    "@nuxt-themes/docus": "^1.1.4"
+    "@nuxt-themes/docus": "^1.1.8"
   }
 }

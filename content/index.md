@@ -35,23 +35,23 @@ What's included
   Nuxt Architecture.
 
   #description
-  Harness the full power of Nuxt and the Nuxt ecosystem.
+  Harness the full power of Nuxt and the Nuxt ecosystem. 
   ::
 
   ::card
   #title
-  Vue Components.
+  Components.
 
   #description
-  Use built-in components (or your own!) inside your content.
+  Use built-in components (or your own!) inside your content. [Ver storybook](/storybook)
   ::
 
   ::card
   #title
-  Write Markdown.
+  Configuración de tailwind
 
   #description
-  Enjoy the ease and simplicity of Markdown and discover MDC syntax.
+  Enjoy the ease and simplicity of Markdown and discover MDC syntax. [Ver tailwind](/tailwind-viewer)
   ::
 ::
 
