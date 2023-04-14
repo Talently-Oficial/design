@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    extends: '@nuxt-themes/docus',
     modules: ['@nuxtjs/tailwindcss'],
+    header: {
+        link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+    }
 })
