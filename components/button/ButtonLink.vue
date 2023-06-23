@@ -1,8 +1,10 @@
 <template>
-  <button
-    :class="classBtn"
-    :disabled="disabled"
+  <a
+    :href="to"
+    :target="target"
+    :class="[classBtn, classButton]"
     class="inline-flex items-center justify-center outline-none relative focus:outline-none"
+    @click.prevent="goTo"
   >
     <span
       :class="[{ 'opacity-0': loading }]"
@@ -21,14 +23,39 @@
         border-width="border-2"
       />
     </div>
-  </button>
+  </a>
 </template>
 
 <script>
 import ButtonMixin from '~/components/button/ButtonMixin'
 
 export default {
-  name: 'Button',
+  name: 'ButtonLink',
   mixins: [ButtonMixin],
+  props: {
+    to: {
+      type: String,
+      default: '',
+    },
+    target: {
+      type: String,
+      default: '',
+    },
+    classButton: {
+      type: String,
+      default: '',
+    },
+  },
+  methods: {
+    goTo() {
+      if (this.disabled) return
+      this.$emit('click', this.to)
+      if (this.target) {
+        window.open(this.to, this.target)
+        return
+      }
+      this.$router.push(this.to)
+    },
+  },
 }
 </script>

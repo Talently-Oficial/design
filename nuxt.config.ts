@@ -1,10 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { fonts } from './config/google-fonts'
+import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-    extends: '@nuxt-themes/docus',
-    modules: [
-        '@nuxtjs/tailwindcss',
-        ['@nuxtjs/google-fonts', fonts],
-    ],
+    modules: ['@nuxtjs/tailwindcss'],
 })
