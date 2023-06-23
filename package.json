@@ -6,17 +6,18 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "tailwind-viewer": "tailwind-config-viewer serve -o true -c tailwind-config-viewer/tailwind.config.js",
-    "tailwind-export": "tailwind-config-viewer export ./tailwind-viewer -c tailwind-config-viewer/tailwind.config.js",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "story:preview": "histoire preview"
   },
   "devDependencies": {
-    "@histoire/plugin-nuxt": "^0.16.0",
-    "@histoire/plugin-vue": "^0.16.0",
+    "@histoire/plugin-nuxt": "^0.16.2",
+    "@histoire/plugin-vue": "^0.16.1",
     "@nuxtjs/tailwindcss": "^6.6.6",
-    "histoire": "^0.16.0",
-    "nuxt": "3.4.1"
+    "histoire": "^0.16.2",
+    "nuxt": "3.5.3"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8"
   }
 }
