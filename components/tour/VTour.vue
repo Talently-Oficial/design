@@ -340,9 +340,9 @@ export default {
 </script>
 
 <style lang="postcss">
-body.v-tour--active {
+/*body.v-tour--active {
   pointer-events: none;
-}
+}*/
 
 .v-tour__target--highlighted {
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.4);

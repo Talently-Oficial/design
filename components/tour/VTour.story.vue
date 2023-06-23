@@ -2,7 +2,7 @@
 import VTour from './VTour.vue'
 import Button from '~/components/button/Button.vue'
 
-const steps = ref([
+const stepsExample = [
   {
     target: "[data-tour='1']",
     header: {
@@ -43,64 +43,184 @@ const steps = ref([
       placement: 'left',
     },
   },
-])
+]
+
+const optionsExample = {
+  highlight: {
+    closeable: true,
+    interaction: false,
+    radio: 0,
+    padding: 0,
+  }
+}
 
 const startTutorial = () => {
   window.$tours.example.start()
 }
+
+// Highlight
+const stepsHighlight = ref([
+  {
+    target: "[data-tour='step-1']",
+    header: {
+      title: 'Herramientas de previsualización',
+    },
+    content: `Estas herramientas nos ayuda a simular cosas del navegador y accesos directos al editor.`,
+    params: {
+      placement: 'top',
+    },
+  },
+  {
+    target: '[data-tour="step-2"]',
+    header: {
+      title: 'Panel interactivo de componente',
+    },
+    content: `Este panel nos ayuda a interactuar con el componente seleccionado, podemos cambiar sus propiedades y ver los cambios en tiempo real. Además podemos ver la documentación y eventos que emite el componente.`,
+    params: {
+      placement: 'bottom',
+    },
+  },
+  {
+    target: '[data-tour="step-3"]',
+    header: {
+      title: 'Código de componente',
+    },
+    content: 'Código de componente escrito para el ejemplo.',
+    params: {
+      placement: 'left',
+    },
+  },
+])
+
+const counter = ref(0)
+
+function initState () {
+  return {
+    highlight: {
+      closeable: false,
+      interaction: true,
+      radio: 0,
+      padding: 0,
+    },
+    enabledButtons: {
+      buttonPrevious: false,
+    },
+  }
+}
+
+const exampleHighlight = `
+const options = ref({
+  highlight: {
+    closeable: true,
+    interaction: false,
+    radio: 0,
+    padding: 0,
+  },
+  enabledButtons: {
+    buttonPrevious: false,
+  },
+})
+
+const steps = ref([
+  {
+    target: "[data-tour='1']",
+    header: {
+      title: 'Herramientas de previsualización',
+    },
+    content: \`Estas herramientas nos ayuda a simular cosas del navegador y accesos directos al editor.\`,
+    params: {
+      placement: 'top',
+    },
+  },
+  {
+    target: '[data-tour="2"]',
+    header: {
+      title: 'Panel interactivo de componente',
+    },
+    content: \`Este panel nos ayuda a interactuar con el componente seleccionado, podemos cambiar sus propiedades y ver los cambios en tiempo real. Además podemos ver la documentación y eventos que emite el componente.\`,
+    params: {
+      placement: 'right',
+    },
+  },
+  {
+    target: '[data-tour="3"]',
+    header: {
+      title: 'Código de componente',
+    },
+    content: 'Código de componente escrito para el ejemplo.',
+    params: {
+      placement: 'right',
+    },
+  },
+])
+
+<VTour name="highlight" :steps="steps" :options="options"/>`;
+
+
+const startTourHighlight = () => {
+  window.$tours.highlight.start()
+}
 </script>
 
 <template>
-  <Story title="VTour" :layout="{ type: 'single', iframe: false }">
+  <Story title="VTour" :layout="{ type: 'single', iframe: false }" group="UI">
     <Variant title="Example" responsive-disabled autoPropsDisabled>
       <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
         <Button @click="startTutorial" color="purple">Iniciar ejemplo</Button>
       </div>
 
-      <div class="absolute top-0 right-0 w-24 h-px">
+      <div class="absolute top-0 right-0 w-24 h-0">
         <div data-tour="1" class="h-full w-full" />
       </div>
-      <div class="absolute top-0 right-0 w-px h-24">
+      <div class="absolute top-0 right-0 w-0 h-24">
         <div data-tour="2" class="h-full w-full" />
       </div>
-      <div class="absolute bottom-0 right-0 w-px h-24">
+      <div class="absolute bottom-0 right-0 w-0 h-24">
         <div data-tour="3" class="h-full w-full" />
       </div>
-      <div class="absolute bottom-0 left-0 w-px h-full">
+      <div class="absolute bottom-0 left-0 w-0 h-full">
         <div data-tour="4" class="h-full w-full" />
       </div>
 
-      <VTour name="example" :steps="steps" :options="{
-          highlight: {
-                closeable: true,
-                interaction: false,
-                radio: 0,
-                padding: 0,
-          },
-          enabledButtons: {
-              buttonPrevious: false,
-          },
-        }"
-      />
+      <VTour name="example" :steps="stepsExample" :options="optionsExample"/>
     </Variant>
 
-    <Variant title="highlight">
-      <pre>
-        <code class="language-html">
-          &lt;VTour name="example" :steps="steps" :options="{
-            highlight: {
-              closeable: true,
-              interaction: false,
-              radio: 0,
-              padding: 0,
-            },
-            enabledButtons: {
-              buttonPrevious: false,
-            },
-          }"
-          /&gt;
-        </code>
-      </pre>
+    <Variant title="highlight" :source="exampleHighlight" responsive-disabled autoPropsDisabled :init-state="initState">
+      <template #default="{ state }">
+        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+          <div class="flex justify-center items-center gap-5">
+            <div data-tour="step-1">
+              <Button color="outline" @click="startTourHighlight">Iniciar</Button>
+            </div>
+
+            <div data-tour="step-2">
+              <Button color="outline" @click="counter = counter + 1">Count {{ counter }}</Button>
+            </div>
+
+            <div data-tour="step-3">
+              <Button color="outline" @click="startTourHighlight">Step 3</Button>
+            </div>
+          </div>
+        </div>
+
+        <VTour name="highlight" :steps="stepsHighlight" :options="{highlight: state.highlight}"/>
+      </template>
+
+
+      <template #controls="{ state }">
+          <div class="p-4">
+            options: {
+              <div class="pl-4 py-3">
+                highlight: {
+                  <HstCheckbox title="closeable" v-model="state.highlight.closeable" />
+                  <HstCheckbox title="interaction" v-model="state.highlight.interaction" />
+                  <HstNumber title="radio" v-model="state.highlight.radio" />
+                  <HstNumber title="padding" v-model="state.highlight.padding" />
+                }
+              </div>
+            }
+          </div>
+      </template>
     </Variant>
   </Story>
 </template>
