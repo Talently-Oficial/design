@@ -73,8 +73,8 @@
 </template>
 
 <script setup>
-import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, KEYS } from './constants'
-import VStep from './VStep.vue'
+import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, KEYS } from '../constants'
+import VStep from '../VStep.vue'
 
 const props = defineProps({
   steps: {
