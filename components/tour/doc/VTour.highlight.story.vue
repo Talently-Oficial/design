@@ -1,14 +1,15 @@
 <script setup>
+import { useNuxtApp } from '#app'
 import VTour from '~/components/tour/VTour.vue'
 import Button from '~/components/button/Button.vue'
 
 const counter = ref(0)
 const options = ref({
   highlight: {
-    closeable: false,
-    interaction: false,
-    radio: 0,
-    padding: 0,
+    closeable: true,
+    interaction: true,
+    radio: 6,
+    padding: 4,
   }
 })
 const steps = ref([
@@ -45,7 +46,8 @@ const steps = ref([
 ])
 
 const startTourHighlight = () => {
-  window.$tours.tourHighlight.start()
+  const { $tours } = useNuxtApp()
+  $tours.tourHighlight.start()
 }
 </script>
 
@@ -69,19 +71,12 @@ const startTourHighlight = () => {
 
     <VTour name="tourHighlight" :steps="steps" :options="options"/>
 
-    <template #controls="{ state }">
-      <div class="p-4">
-        options: {
-        <div class="pl-4 py-3">
-          highlight: {
-          <HstCheckbox title="closeable" v-model="options.highlight.closeable" />
-          <HstCheckbox title="interaction" v-model="options.highlight.interaction"/>
-          <HstNumber title="radio" v-model="options.highlight.radio"/>
-          <HstNumber title="padding" v-model="options.highlight.padding"/>
-          }
-        </div>
-        }
-      </div>
+    <template #controls>
+      <p class="p-2">highlight properties:</p>
+      <HstCheckbox title="closeable" v-model="options.highlight.closeable"/>
+      <HstCheckbox title="interaction" v-model="options.highlight.interaction"/>
+      <HstNumber title="radio" v-model="options.highlight.radio"/>
+      <HstNumber title="padding" v-model="options.highlight.padding"/>
     </template>
 
     <template #source>
@@ -136,7 +131,6 @@ const steps = ref([
 <template>
   <VTour name="tourHighlight" :steps="steps" :options="options"/>
 </template>
-
         </textarea>
     </template>
   </Story>

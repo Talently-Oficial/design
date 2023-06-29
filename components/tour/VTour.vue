@@ -75,6 +75,7 @@
 <script>
 import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, KEYS } from './constants'
 import VStep from './VStep.vue'
+import { useNuxtApp } from '#app'
 
 export default {
   name: 'VTour',
@@ -157,7 +158,7 @@ export default {
     },
   },
   mounted() {
-    window.$tours = {}
+    const { $tours } = useNuxtApp()
     $tours[this.name] = this
   },
   beforeDestroy() {
@@ -340,9 +341,9 @@ export default {
 </script>
 
 <style lang="postcss">
-/*body.v-tour--active {
+body.v-tour--active {
   pointer-events: none;
-}*/
+}
 
 .v-tour__target--highlighted {
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.4);

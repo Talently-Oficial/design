@@ -7,9 +7,7 @@ export default defineConfig({
         HstVue(),
         HstNuxt(),
     ],
-    setupFile: {
-        browser: './histoire.setup.ts',
-    },
+    setupFile: './histoire.setup.ts',
     theme: {
         title: 'Talently',
         logo: {

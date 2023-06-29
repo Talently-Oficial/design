@@ -186,7 +186,7 @@ const customEvent = () => {
             <a href="https://histoire.dev/reference/vue3/variant.html" target="_blank" class="text-green-500 hover:underline">Variant</a>
           </li>
           <li>
-            <a href="https://controls.histoire.dev/" target="_blank" class="text-green-500 hover:underline">Controles</a>
+            <a href="https://controls.histoire.dev/" target="_blank" class="text-green-500 hover:underline">Controls</a>
           </li>
         </ul>
       </div>

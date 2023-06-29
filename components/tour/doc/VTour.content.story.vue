@@ -1,4 +1,5 @@
 <script setup>
+import { useNuxtApp } from '#app'
 import VTour from '~/components/tour/VTour.vue'
 import Button from '~/components/button/Button.vue'
 
@@ -27,12 +28,13 @@ const options = ref({
 })
 
 const startTourHighlight = () => {
-  window.$tours.tourContent.start()
+  const { $tours } = useNuxtApp()
+  $tours.tourContent.start()
 }
 </script>
 
 <template>
-  <Story title="VTour/Content" icon="vscode-icons:file-type-vue" autoPropsDisabled>
+  <Story title="VTour/Content Html" icon="vscode-icons:file-type-vue" autoPropsDisabled>
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
       <div class="flex justify-center flex-wrap items-center gap-5">
         <div data-tour="step-1">

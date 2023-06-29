@@ -154,8 +154,9 @@ export default {
   data() {
     return {
       elements: [],
-      targetElement: document.querySelector(this.step.target),
+      targetElement: null,
       observerElement: null,
+      popper: null,
     }
   },
   computed: {
@@ -175,6 +176,8 @@ export default {
     },
   },
   mounted() {
+    this.targetElement = document.querySelector(this.step.target)
+
     this.targetElement.classList.add(HIGHLIGHT.classes.targetActive)
 
     if (!this.params.highlight.interaction) {
@@ -182,12 +185,9 @@ export default {
     }
     this.createStep()
   },
-  destroyed() {
+  unmounted() {
     this.targetElement.classList.remove(HIGHLIGHT.classes.targetActive)
-
-    if (!this.params.highlight.interaction) {
-      this.targetElement.classList.remove(HIGHLIGHT.classes.targetDisabled)
-    }
+    this.targetElement.classList.remove(HIGHLIGHT.classes.targetDisabled)
     // this.removeHighlight()
     this.removeListeners()
   },
@@ -206,13 +206,13 @@ export default {
         this.enableScrolling()
         // this.createHighlight()
 
-        const popper = createPopper(
+        this.popper = createPopper(
             this.targetElement,
             this.$refs['v-step'],
             this.params
         )
 
-        this.elements = popper.state.scrollParents.reference.filter(
+        this.elements = this.popper.state.scrollParents.reference.filter(
             (element) => element instanceof HTMLElement
         )
 
@@ -248,6 +248,9 @@ export default {
         )
       }
       return this.params.highlight
+    },
+    reloadPopper() {
+      this.popper.forceUpdate()
     },
     createHighlight() {
       if (this.isHighlightEnabled()) {
@@ -323,6 +326,7 @@ export default {
     },
     onResize() {
       this.$emit('resize', this.targetElement)
+      this.reloadPopper()
     },
     onScroll() {
       this.$emit('scroll', this.targetElement)
