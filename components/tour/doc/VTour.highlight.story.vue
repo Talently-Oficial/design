@@ -3,8 +3,6 @@ import { useNuxtApp } from '#app'
 import VTour from '~/components/tour/VTour.vue'
 import Button from '~/components/button/Button.vue'
 
-const { $tours } = useNuxtApp()
-
 const counter = ref(0)
 const options = ref({
   highlight: {
@@ -46,21 +44,15 @@ const steps = ref([
     },
   },
 ])
-const keyVTour = ref(1)
-
-watch(() => options.value,
-    async () => { keyVTour.value++  },
-    { deep: true }
-)
 
 const startTourHighlight = (step = 0) => {
-  console.log($tours)
+  const { $tours } = useNuxtApp()
   $tours.tourHighlight.start(step)
 }
 </script>
 
 <template>
-  <Story title="VTour/Highlight" icon="vscode-icons:file-type-vue" autoPropsDisabled>
+  <Story title="VTour/Highlight" icon="vscode-icons:file-type-vue" autoPropsDisabled :layout="{ type: 'single', iframe: false }">
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
       <div class="flex justify-center flex-wrap items-center gap-5">
         <div data-tour="step-1">
@@ -77,7 +69,7 @@ const startTourHighlight = (step = 0) => {
       </div>
     </div>
 
-    <VTour :key="keyVTour" name="tourHighlight" :steps="steps" :options="options"/>
+    <VTour name="tourHighlight" :steps="steps" :options="options"/>
 
     <template #controls>
       <p class="p-2 font-strong">highlight properties:</p>
