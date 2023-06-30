@@ -1,14 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev": "nuxt dev",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "story:dev": "histoire dev",
-    "story:build": "histoire build",
-    "story:preview": "histoire preview"
+    "dev": "histoire dev",
+    "build": "histoire build",
+    "preview": "histoire preview"
   },
   "devDependencies": {
     "@histoire/plugin-nuxt": "^0.16.2",

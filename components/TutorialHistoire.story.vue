@@ -1,6 +1,9 @@
 <script setup>
+import { useNuxtApp } from '#app'
 import VTour from '~/components/tour/VTour.vue'
 import { logEvent } from 'histoire/client'
+
+const { $tours } = useNuxtApp()
 
 const stepsTutorial = ref([
   {
@@ -124,7 +127,7 @@ const controls = ref({
 })
 
 const startTutorial = () => {
-  window.$tours.example.start()
+  $tours.example.start()
   logEvent('Start Tutorial', {
     tutorial: 'example',
   })

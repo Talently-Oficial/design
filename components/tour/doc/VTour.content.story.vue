@@ -3,6 +3,8 @@ import { useNuxtApp } from '#app'
 import VTour from '~/components/tour/VTour.vue'
 import Button from '~/components/button/Button.vue'
 
+const { $tours } = useNuxtApp()
+
 const steps = ref([
   {
     target: `[data-tour='step-1']`,
@@ -28,7 +30,6 @@ const options = ref({
 })
 
 const startTourHighlight = () => {
-  const { $tours } = useNuxtApp()
   $tours.tourContent.start()
 }
 </script>

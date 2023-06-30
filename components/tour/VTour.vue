@@ -159,9 +159,17 @@ export default {
   },
   mounted() {
     const { $tours } = useNuxtApp()
-    $tours[this.name] = this
+
+    $tours[this.name] = {
+      start: this.start,
+      stop: this.stop,
+      skip: this.skip,
+      finish: this.finish,
+      previousStep: this.previousStep,
+      nextStep: this.nextStep
+    }
   },
-  beforeDestroy() {
+  unmounted() {
     // Remove the keyup listener if it has been defined
     if (this.customOptions.useKeyboardNavigation) {
       window.removeEventListener('keyup', this.handleKeyup)

@@ -3,6 +3,8 @@ import { useNuxtApp } from '#app'
 import VTour from '~/components/tour/VTour.vue'
 import Button from '~/components/button/Button.vue'
 
+const { $tours } = useNuxtApp()
+
 const counter = ref(0)
 const options = ref({
   highlight: {
@@ -44,10 +46,16 @@ const steps = ref([
     },
   },
 ])
+const keyVTour = ref(1)
 
-const startTourHighlight = () => {
-  const { $tours } = useNuxtApp()
-  $tours.tourHighlight.start()
+watch(() => options.value,
+    async () => { keyVTour.value++  },
+    { deep: true }
+)
+
+const startTourHighlight = (step = 0) => {
+  console.log($tours)
+  $tours.tourHighlight.start(step)
 }
 </script>
 
@@ -56,23 +64,23 @@ const startTourHighlight = () => {
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
       <div class="flex justify-center flex-wrap items-center gap-5">
         <div data-tour="step-1">
-          <Button color="outline" @click="startTourHighlight">Iniciar</Button>
+          <Button color="outline" class="w-32" @click="startTourHighlight()">Inicio</Button>
         </div>
 
         <div data-tour="step-2">
-          <Button color="outline" @click="counter = counter + 1">Count {{ counter }}</Button>
+          <Button color="outline" class="w-32" @click="counter = counter + 1">Count {{ counter }}</Button>
         </div>
 
         <div data-tour="step-3">
-          <Button color="outline" @click="startTourHighlight">Step 3</Button>
+          <Button color="outline" class="w-32" @click="startTourHighlight(2)">Fin</Button>
         </div>
       </div>
     </div>
 
-    <VTour name="tourHighlight" :steps="steps" :options="options"/>
+    <VTour :key="keyVTour" name="tourHighlight" :steps="steps" :options="options"/>
 
     <template #controls>
-      <p class="p-2">highlight properties:</p>
+      <p class="p-2 font-strong">highlight properties:</p>
       <HstCheckbox title="closeable" v-model="options.highlight.closeable"/>
       <HstCheckbox title="interaction" v-model="options.highlight.interaction"/>
       <HstNumber title="radio" v-model="options.highlight.radio"/>
@@ -88,9 +96,6 @@ const options = ref({
     interaction: {{options.highlight.interaction}},
     radio: {{options.highlight.radio}},
     padding: {{options.highlight.padding}},
-  },
-  enabledButtons: {
-    buttonPrevious: false,
   },
 })
 

@@ -2,9 +2,6 @@ import type {Config} from 'tailwindcss'
 
 export default <Partial<Config>>{
     theme: {
-        fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-        },
         extend: {
             colors: {
                 primary: {
@@ -55,17 +52,6 @@ export default <Partial<Config>>{
                     700: '#4D4E57',
                     800: '#42424A',
                     900: '#3A3A40',
-                },
-                brand: {
-                    yellow: {
-                        500: '#ffcd00',
-                    },
-                    green: {
-                        500: '#3be8b0',
-                    },
-                    orange: {
-                        500: '#FF9830',
-                    },
                 },
             },
         }
