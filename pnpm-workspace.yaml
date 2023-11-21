@@ -1,0 +1,4 @@
+packages:
+  - 'doc'
+  - 'histoire'
+  - 'packages/**'

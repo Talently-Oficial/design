@@ -1,7 +1,6 @@
 <script setup>
 import { useNuxtApp } from '#app'
-import VTour from '~/components/tour/VTour.vue'
-import Button from '~/components/button/Button.vue'
+import VTour from '../../../packages/tour/src/VTour.vue'
 
 const steps = ref([
   {
@@ -38,7 +37,7 @@ const startTourHighlight = () => {
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
       <div class="flex justify-center flex-wrap items-center gap-5">
         <div data-tour="step-1">
-          <Button color="outline" @click="startTourHighlight">Iniciar</Button>
+          <UIButton color="outline" @click="startTourHighlight">Iniciar</UIButton>
         </div>
       </div>
     </div>

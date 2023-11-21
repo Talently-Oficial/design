@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import ButtonMixin from '~/components/button/ButtonMixin'
+import ButtonMixin from './ButtonMixin'
 
 export default {
   name: 'ButtonLink',

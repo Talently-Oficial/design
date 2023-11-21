@@ -1,16 +1,24 @@
 {
   "private": true,
   "scripts": {
-    "dev": "histoire dev",
-    "build": "histoire build",
-    "preview": "histoire preview"
+    "build": "nuxi build",
+    "dev": "nuxi dev",
+    "start": "nuxi start",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview",
+    "postinstall": "nuxi prepare"
   },
+  "workspaces": [
+    "doc",
+    "histoire/*",
+    "packages/*"
+  ],
   "devDependencies": {
-    "@histoire/plugin-nuxt": "^0.16.2",
-    "@histoire/plugin-vue": "^0.16.1",
-    "@nuxtjs/tailwindcss": "^6.6.6",
-    "histoire": "^0.16.2",
-    "nuxt": "^3.6.1"
+    "@histoire/plugin-nuxt": "^0.17.5",
+    "@histoire/plugin-vue": "^0.17.5",
+    "@nuxtjs/tailwindcss": "^6.9.5",
+    "histoire": "^0.17.5",
+    "nuxt": "^3.8.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8"
