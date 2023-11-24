@@ -21,12 +21,21 @@ importers:
       '@nuxtjs/tailwindcss':
         specifier: ^6.9.5
         version: 6.9.5(webpack@5.89.0)
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
       histoire:
         specifier: ^0.17.5
         version: 0.17.5(vite@4.5.0)
       nuxt:
         specifier: ^3.8.2
         version: 3.8.2(vite@4.5.0)
+
+  histoire: {}
+
+  packages/tour: {}
+
+  packages/ui: {}
 
 packages:
 
@@ -2886,6 +2895,12 @@ packages:
       consola: 3.2.3
     dev: true
 
+  /class-variance-authority@0.7.0:
+    resolution: {integrity: sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==}
+    dependencies:
+      clsx: 2.0.0
+    dev: true
+
   /clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
     engines: {node: '>=6'}
@@ -2919,6 +2934,11 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
+    dev: true
+
+  /clsx@2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
+    engines: {node: '>=6'}
     dev: true
 
   /cluster-key-slot@1.1.2:

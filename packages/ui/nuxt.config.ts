@@ -5,6 +5,6 @@ export default defineNuxtConfig({
         enabled: true
     },
     components: [
-        { path: './components', prefix: 'U' }
+        { path: './components', pathPrefix: false, prefix: 'U' }
     ],
 })

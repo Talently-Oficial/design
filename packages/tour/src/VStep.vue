@@ -81,7 +81,7 @@
 <script>
 import { createPopper } from '@popperjs/core'
 import { DEFAULT_OPTIONS, DEFAULT_STEP_OPTIONS, HIGHLIGHT } from './constants'
-import Button from '../../ui/components/button/Button.vue'
+import Button from '../../ui/components/elements/button/Button.vue'
 
 export default {
   name: 'VStep',

@@ -17,6 +17,7 @@
     "@histoire/plugin-nuxt": "^0.17.5",
     "@histoire/plugin-vue": "^0.17.5",
     "@nuxtjs/tailwindcss": "^6.9.5",
+    "class-variance-authority": "^0.7.0",
     "histoire": "^0.17.5",
     "nuxt": "^3.8.2"
   },
