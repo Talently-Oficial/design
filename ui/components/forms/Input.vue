@@ -1,6 +1,5 @@
 <script setup>
-import { computed } from 'vue'
-import Label from './Label.vue'
+import Label from '~/components/forms/Label.vue'
 import {
   boxInputStyles,
   inputStyles,

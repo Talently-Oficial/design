@@ -1,13 +1,14 @@
 <script setup>
+const number = ref(0)
 </script>
 
 <template>
-  <Story title="Button/colors" icon="vscode-icons:file-type-vue" autoPropsDisabled :layout="{ type: 'single', iframe: true }">
+  <Story title="UI/forms/InputNumber" icon="vscode-icons:file-type-vue" autoPropsDisabled :layout="{ type: 'single' }">
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-      <div class="flex justify-center flex-wrap items-center gap-5">
-        <div data-tour="step-1">
-          <UIButton class="w-32">Inicio</UIButton>
-        </div>
+      <div>
+        <pre>{{ number }}</pre>
+        <input type="number">
+        <UInputNumber placeholder="Number" :onlyNumbers="true" v-model="number" />
       </div>
     </div>
 

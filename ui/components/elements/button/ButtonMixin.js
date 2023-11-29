@@ -1,4 +1,4 @@
-import CircleLoader from '~/components/loaders/CircleLoader.vue'
+import CircleLoader from '~/components/loaders/CircleLoader'
 
 export default {
   components: {

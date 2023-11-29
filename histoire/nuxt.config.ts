@@ -3,7 +3,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
     modules: ['@nuxtjs/tailwindcss'],
-    extends: ['../packages/ui'],
+    extends: ['../ui'],
     devtools: {
         enabled: true
     },
