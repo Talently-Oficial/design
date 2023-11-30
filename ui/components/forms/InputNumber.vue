@@ -68,11 +68,6 @@ const props = defineProps({
     required: false,
     default: false,
   },
-  maxLength: {
-    type: Number,
-    required: false,
-    default: 524288,
-  },
   min: {
     type: Number,
     default: -Infinity,
@@ -89,7 +84,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'keyup', 'blur', 'paste'])
 
 const inputNumber = ref(null)
-const internalValue = ref(props.modelValue)
 
 const colorInput = computed(() => {
   if (props.messageDanger) return dangerColor
@@ -98,33 +92,42 @@ const colorInput = computed(() => {
   return defaultColor
 })
 
-watch(() => props.modelValue, (newValue) => {
-  internalValue.value = newValue
+watch(() => props.modelValue, (value) => {
+  if (value < props.min) {
+    inputNumber.value.value = props.min
+    emit('update:modelValue', props.min)
+  }
+
+  if (value > props.max) {
+    inputNumber.value.value = props.max
+    emit('update:modelValue', props.max)
+  }
 })
 
-const displayValue = computed({
-  get: () => internalValue.value.toString(),
-  set: (val) => {
-    let newValue = parseFloat(val);
-    newValue = isNaN(newValue) ? 0 : newValue;
-    newValue = Math.min(Math.max(newValue, props.min), props.max);
-    internalValue.value = newValue;
-    emit('update:modelValue', newValue);
-  },
-})
+const onInput = (event) => {
+  if (props.onlyNumbers && ['e', 'E', '+', '-', '%'].includes(event.data)) {
+    inputNumber.value.value = props.modelValue
+    return
+  }
 
-const onKeyup = (event) => emit('keyup', event.target.value)
+  emit('update:modelValue', inputNumber.value.value)
+}
+
+const onKeyup = (event) => {
+  if (props.onlyNumbers && ['e', 'E', '+', '-', '%'].includes(event.data)) {
+    inputNumber.value.value = props.modelValue
+    return
+  }
+
+  emit('update:modelValue', inputNumber.value.value)
+}
+
 const onBlur = (event) => {
   if (inputNumber) {
-    emit('blur', event.target.value)
+    emit('update:modelValue', event.target.value)
   }
 }
-const onInput = (event) => {
-  const inputValue = event.target.value;
-  // Permitir solo números y punto decimal
-  const cleanedValue = inputValue.replace(/[^\d.]/g, '');
-  displayValue.value = cleanedValue;
-}
+
 const onPaste = (event) => emit('paste', event.target.value)
 </script>
 
@@ -144,14 +147,13 @@ const onPaste = (event) => emit('paste', event.target.value)
       <input
           :id="id"
           ref="inputNumber"
-          :value="displayValue"
-          type="text"
+          :value="props.modelValue"
+          type="number"
           :tabindex="tabindex"
           :placeholder="placeholder"
           :required="required"
           :autocomplete="autocomplete"
           :disabled="disabled"
-          :maxlength="maxLength"
           :class="inputStyles({ size, disabled })"
           @input="onInput"
           @keyup="onKeyup"
