@@ -95,12 +95,12 @@ const colorInput = computed(() => {
 watch(() => props.modelValue, (value) => {
   if (value < props.min) {
     inputNumber.value.value = props.min
-    emit('update:modelValue', props.min)
+    emit('update:modelValue', Number(props.min))
   }
 
   if (value > props.max) {
     inputNumber.value.value = props.max
-    emit('update:modelValue', props.max)
+    emit('update:modelValue', Number(props.max))
   }
 })
 
@@ -110,7 +110,7 @@ const onInput = (event) => {
     return
   }
 
-  emit('update:modelValue', inputNumber.value.value)
+  emit('update:modelValue', Number(inputNumber.value.value))
 }
 
 const onKeyup = (event) => {
@@ -119,16 +119,16 @@ const onKeyup = (event) => {
     return
   }
 
-  emit('update:modelValue', inputNumber.value.value)
+  emit('update:modelValue', Number(inputNumber.value.value))
 }
 
 const onBlur = (event) => {
   if (inputNumber) {
-    emit('update:modelValue', event.target.value)
+    emit('update:modelValue', Number(event.target.value))
   }
 }
 
-const onPaste = (event) => emit('paste', event.target.value)
+const onPaste = (event) => emit('paste', Number(event.target.value))
 </script>
 
 <template>
