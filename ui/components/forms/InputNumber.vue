@@ -81,7 +81,7 @@ const props = defineProps({
     default: false,
   },
 })
-const emit = defineEmits(['update:modelValue', 'keyup', 'blur', 'paste'])
+const emit = defineEmits(['update:modelValue', 'change', 'keyup', 'blur', 'paste'])
 
 const inputNumber = ref(null)
 
@@ -95,14 +95,19 @@ const colorInput = computed(() => {
 watch(() => props.modelValue, (value) => {
   if (value < props.min) {
     inputNumber.value.value = props.min
-    emit('update:modelValue', Number(props.min))
+    emitChange(props.min)
   }
 
   if (value > props.max) {
     inputNumber.value.value = props.max
-    emit('update:modelValue', Number(props.max))
+    emitChange(props.max)
   }
 })
+
+const emitChange = (value) => {
+  emit('update:modelValue', Number(value))
+  emit('change', Number(value))
+}
 
 const onInput = (event) => {
   if (props.onlyNumbers && ['e', 'E', '+', '-', '%'].includes(event.data)) {
@@ -110,7 +115,7 @@ const onInput = (event) => {
     return
   }
 
-  emit('update:modelValue', Number(inputNumber.value.value))
+  emitChange(inputNumber.value.value)
 }
 
 const onKeyup = (event) => {
@@ -119,16 +124,18 @@ const onKeyup = (event) => {
     return
   }
 
-  emit('update:modelValue', Number(inputNumber.value.value))
+  emit('keyup', Number(event.target.value))
 }
 
 const onBlur = (event) => {
   if (inputNumber) {
-    emit('update:modelValue', Number(event.target.value))
+    emit('blur', Number(event.target.value))
   }
 }
 
-const onPaste = (event) => emit('paste', Number(event.target.value))
+const onPaste = (event) => {
+  emit('paste', Number(event.target.value))
+}
 </script>
 
 <template>

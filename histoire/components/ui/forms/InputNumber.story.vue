@@ -8,6 +8,7 @@ const form = ref({
   <Story title="UI/forms/InputNumber" icon="vscode-icons:file-type-vue" autoPropsDisabled :layout="{ type: 'single' }">
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
       <div>
+        {{ form }}
         <UInputNumber placeholder="Number" :onlyNumbers="true" v-model="form.number" :min="-10" :max="100" />
       </div>
     </div>
