@@ -4,5 +4,10 @@
     "dev": "histoire dev",
     "build": "histoire build",
     "preview": "histoire preview"
+  },
+  "devDependencies": {
+    "@histoire/plugin-nuxt": "^0.17.6",
+    "@histoire/plugin-vue": "^0.17.6",
+    "histoire": "^0.17.6"
   }
 }
