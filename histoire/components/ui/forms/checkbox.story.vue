@@ -26,5 +26,15 @@ const value = ref([])
         </div>
       </div>
     </div>
+
+    <template #source>
+      <textarea>
+<div v-for="item in options">
+  <UCheckbox v-model="value" :value="item.value">
+    name
+  </UCheckbox>
+</div>
+      </textarea>
+    </template>
   </Story>
 </template>

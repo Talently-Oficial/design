@@ -10,8 +10,10 @@
 <!--      <HstJson title="Options" v-model="options" />-->
 <!--    </template>-->
 
-<!--    <template #source>-->
-
-<!--    </template>-->
+    <template #source>
+      <textarea>
+<UInput placeholder="Example" />
+      </textarea>
+    </template>
   </Story>
 </template>

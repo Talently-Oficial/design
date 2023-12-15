@@ -14,8 +14,10 @@ const content = ref('')
 <!--      <HstJson title="Options" v-model="options" />-->
 <!--    </template>-->
 
-<!--    <template #source>-->
-
-<!--    </template>-->
+    <template #source>
+      <textarea>
+<UTextarea />
+      </textarea>
+    </template>
   </Story>
 </template>
