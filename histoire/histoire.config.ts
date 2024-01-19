@@ -1,6 +1,7 @@
 import { defineConfig } from 'histoire'
 import { HstVue } from '@histoire/plugin-vue'
 import { HstNuxt } from '@histoire/plugin-nuxt'
+import customTailwind from "../tailwind.config";
 
 export default defineConfig({
     plugins: [
@@ -15,6 +16,20 @@ export default defineConfig({
           light: './assets/images/light-logo.png',
           dark: './assets/images/dark-logo.png',
         },
+        colors: {
+            primary: {
+                50: customTailwind.theme.colors.primary["50"],
+                100: customTailwind.theme.colors.primary["100"],
+                200: customTailwind.theme.colors.primary["200"],
+                300: customTailwind.theme.colors.primary["300"],
+                400: customTailwind.theme.colors.primary["600"],
+                500: customTailwind.theme.colors.primary["700"],
+                600: customTailwind.theme.colors.primary["700"],
+                700: customTailwind.theme.colors.primary["700"],
+                800: customTailwind.theme.colors.primary["700"],
+                900: '#4f465b',
+            },
+        }
     },
     tree: {
         order: (a, b) => {
