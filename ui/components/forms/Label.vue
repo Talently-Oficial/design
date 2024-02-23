@@ -1,6 +1,6 @@
 <script setup>
-defineProps({
-  isHidden: {
+const props = defineProps({
+  required: {
     type: Boolean,
     default: false,
   },
@@ -10,17 +10,23 @@ defineProps({
   },
   margin: {
     type: String,
-    default: 'mb-1',
+    default: 'mb-1.5',
   },
 })
 </script>
 
 <template>
   <label
-    :for="id"
-    class="mb-1.5 inline-block text-sm text-primary-900"
-    :class="[{ 'sr-only': isHidden }, margin]"
+      :for="props.id"
+      class="inline-block text-sm"
+      :class="[props.margin]"
   >
     <slot />
+    <span
+        v-if="props.required"
+        class="text-red-500"
+    >
+			*
+		</span>
   </label>
 </template>
