@@ -9,6 +9,7 @@
     "postinstall": "nuxi prepare"
   },
   "dependencies": {
-    "class-variance-authority": "^0.7.0"
+    "class-variance-authority": "^0.7.0",
+    "vue-slider-component": "4.1.0-beta.7"
   }
 }

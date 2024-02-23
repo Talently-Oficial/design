@@ -1,5 +1,4 @@
 packages:
-  - 'doc'
   - 'histoire'
   - 'packages/**'
   - 'ui'
