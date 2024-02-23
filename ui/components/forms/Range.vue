@@ -45,6 +45,10 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  stepInputs: {
+    type: Number,
+    default: null,
+  },
   lazy: {
     type: Boolean,
     default: false,
@@ -83,8 +87,18 @@ const onDragging = (event: Event) => {
   emit('dragging', event)
 }
 
-const onchange = () => {
-  emit('change', model.value)
+const onchange = (event: Event) => {
+  emit('change', event)
+}
+
+const onchangeInput = (type: string, value: number) => {
+  if (type === 'min') {
+    emit('change', [value, model.value[1]])
+  }
+
+  if (type === 'max') {
+    emit('change', [model.value[0], value])
+  }
 }
 
 const onBlur = () => {
@@ -123,8 +137,11 @@ const onPaste = () => {
         <ULabel margin="mb-0">{{ props.labelMinRange }}</ULabel>
         <UInputNumber
             v-model="model[0]"
+            :min="props.min"
+            :max="props.max"
             :disabled="props.disabled"
-            @change="onchange"
+            :step="props.stepInputs || props.step"
+            @change="onchangeInput('min', $event)"
             @blur="onBlur"
             @paste="onPaste"
         />
@@ -134,8 +151,11 @@ const onPaste = () => {
         <ULabel margin="mb-0">{{ props.labelMaxRange }}</ULabel>
         <UInputNumber
             v-model="model[1]"
+            :min="props.min"
+            :max="props.max"
             :disabled="props.disabled"
-            @change="onchange"
+            :step="props.stepInputs || props.step"
+            @change="onchangeInput('max', $event)"
             @blur="onBlur"
             @paste="onPaste"
         />
