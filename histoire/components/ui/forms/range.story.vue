@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { logEvent } from 'histoire/client'
 const range = ref([0, 500])
 </script>
 
@@ -11,8 +12,10 @@ const range = ref([0, 500])
             class="px-4"
             tooltip="none"
             :step="500"
-            :min="500"
+            :min="0"
             :max="20000"
+            @blur="logEvent('blur', $event)"
+            @drag-end="logEvent('drag-end', $event)"
         />
       </div>
     </div>
@@ -27,8 +30,10 @@ const range = ref([0, 500])
             v-model="range"
             tooltip="none"
             :step="500"
-            :min="500"
+            :min="0"
             :max="20000"
+            @blur="onBlur"
+            @drag-end="onDragEnd"
         />
       </textarea>
     </template>

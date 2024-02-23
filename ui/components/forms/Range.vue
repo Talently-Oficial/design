@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import VueSlider from 'vue-slider-component'
 
-const emit = defineEmits(['drag-end'])
+const emit = defineEmits(['drag-end', 'change', 'drag-start', 'dragging', 'blur', 'paste'])
 const model = defineModel()
 
 const props = defineProps({
@@ -75,14 +75,31 @@ const onDragEnd = (event: Event) => {
   emit('drag-end', event)
 }
 
-const onchange = (event: Event) => emit('drag-end', event)
+const onDragStart = (event: Event) => {
+  emit('drag-start', event)
+}
+
+const onDragging = (event: Event) => {
+  emit('dragging', event)
+}
+
+const onchange = () => {
+  emit('change', model.value)
+}
+
+const onBlur = () => {
+  emit('blur', model.value)
+}
+
+const onPaste = () => {
+  emit('paste', model.value)
+}
 </script>
 
 <template>
   <div>
     <VueSlider
         width="100%"
-        class="slide-range"
         v-model="model"
         :lazy="lazy"
         :min="props.min"
@@ -90,24 +107,38 @@ const onchange = (event: Event) => emit('drag-end', event)
         :min-range="props.minRange"
         :max-range="props.maxRange"
         :data="props.data"
-        @change="onchange"
-        @drag-end="onDragEnd"
         :interval="props.step"
         :disabled="props.disabled"
         :tooltip="props.tooltip"
         :dot-size="24"
         :height="8"
+        @change="onchange"
+        @drag-start="onDragStart"
+        @dragging="onDragging"
+        @drag-end="onDragEnd"
     />
 
     <div v-if="isShowInputs" class="flex gap-2 justify-between" :class="inputBoxClass">
       <div class="w-full max-w-36">
         <ULabel margin="mb-0">{{ props.labelMinRange }}</ULabel>
-        <UInputNumber v-model="model[0]" :disabled="props.disabled" />
+        <UInputNumber
+            v-model="model[0]"
+            :disabled="props.disabled"
+            @change="onchange"
+            @blur="onBlur"
+            @paste="onPaste"
+        />
       </div>
 
       <div class="w-full max-w-36">
         <ULabel margin="mb-0">{{ props.labelMaxRange }}</ULabel>
-        <UInputNumber v-model="model[1]" :disabled="props.disabled" />
+        <UInputNumber
+            v-model="model[1]"
+            :disabled="props.disabled"
+            @change="onchange"
+            @blur="onBlur"
+            @paste="onPaste"
+        />
       </div>
     </div>
   </div>
