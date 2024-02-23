@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "histoire dev",
+    "dev": "histoire dev --open",
     "build": "histoire build",
     "preview": "histoire preview"
   },

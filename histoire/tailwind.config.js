@@ -93,10 +93,10 @@ const brand = {
 
 const customTailwind = {
     theme: {
-        fontFamily: {
-            sans: ['"NB International Pro Book"'],
-            body: ['"NB International Pro"'],
-        },
+        // fontFamily: {
+        //     sans: ['"NB International Pro Book"'],
+        //     body: ['"NB International Pro"'],
+        // },
         screens: {
             xxs: '320px',
             xs: '375px',
