@@ -1,6 +1,4 @@
 <script setup>
-import Label from '~/components/forms/Label.vue'
-
 import {
   boxInputStyles,
   inputStyles,
@@ -12,8 +10,8 @@ import {
 
 const props = defineProps({
   modelValue: {
-    type: [String, Number],
-    default: '',
+    type: [Number, String],
+    default: 0,
   },
   id: {
     type: String,
@@ -23,9 +21,13 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  value: {
+    type: [String, Number],
+    default: '',
+  },
   type: {
     type: String,
-    default: 'text',
+    default: 'classic',
   },
   label: {
     type: String,
@@ -43,10 +45,6 @@ const props = defineProps({
   size: {
     type: String,
     default: 'md',
-  },
-  autocomplete: {
-    type: String,
-    default: null,
   },
   messageSuccess: {
     type: String,
@@ -70,20 +68,27 @@ const props = defineProps({
   },
   min: {
     type: Number,
-    default: -Infinity,
+    default: 0,
   },
   max: {
     type: Number,
-    default: Infinity,
+    default: 100,
   },
-  onlyNumbers: {
+  step: {
+    type: Number,
+    default: 1,
+  },
+  hideArrows: {
     type: Boolean,
     default: false,
   },
 })
-const emit = defineEmits(['update:modelValue', 'change', 'keyup', 'blur', 'paste'])
 
-const inputNumber = ref(null)
+const emit = defineEmits(['update:modelValue', 'keyup', 'blur', 'paste', 'change', 'stopEdit'])
+
+const moreThan5 = computed(() => {
+  return value.value > 5
+})
 
 const colorInput = computed(() => {
   if (props.messageDanger) return dangerColor
@@ -92,96 +97,171 @@ const colorInput = computed(() => {
   return defaultColor
 })
 
-watch(() => props.modelValue, (value) => {
-  if (value < props.min) {
-    inputNumber.value.value = props.min
-    emitChange(props.min)
-  }
+const showInputNumber = computed(() => {
+  if (props.type === 'classic') return true
+  return props.type === 'grid' && moreThan5.value
+})
 
-  if (value > props.max) {
-    inputNumber.value.value = props.max
-    emitChange(props.max)
+const colorButton = computed(() => {
+  return (val) => {
+    if (value.value === val) return 'border-primary-500 bg-primary-500 bg-opacity-5 text-primary-500'
+    return 'border bg-white hover:border-primary-500'
   }
 })
 
-const emitChange = (value) => {
-  emit('update:modelValue', Number(value))
-  emit('change', Number(value))
+const value = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  },
+})
+
+const onChange = (event) => emit('change', event.target.value)
+const onKeyup = (event) => emit('keyup', event.target.value)
+const onBlur = (event) => emit('blur', event.target.value)
+const onPaste = (event) => emit('paste', event.target.value)
+
+const changeNumberWithButton = (val) => {
+  moreThan5.value = false
+  value.value = val
 }
 
-const onInput = (event) => {
-  if (props.onlyNumbers && ['e', 'E', '+', '-', '%'].includes(event.data)) {
-    inputNumber.value.value = props.modelValue
-    return
+const onMoreThan5 = () => {
+  moreThan5.value = !moreThan5.value
+  if (value.value <= 5) {
+    value.value = 6
   }
-
-  emitChange(inputNumber.value.value)
-}
-
-const onKeyup = (event) => {
-  if (props.onlyNumbers && ['e', 'E', '+', '-', '%'].includes(event.data)) {
-    inputNumber.value.value = props.modelValue
-    return
-  }
-
-  emit('keyup', Number(event.target.value))
-}
-
-const onBlur = (event) => {
-  if (inputNumber) {
-    emit('blur', Number(event.target.value))
-  }
-}
-
-const onPaste = (event) => {
-  emit('paste', Number(event.target.value))
 }
 </script>
 
 <template>
   <div>
     <slot name="label">
-      <Label v-if="label" :for="id">
-        {{ label }} <span v-if="required" class="text-red-500">*</span>
-      </Label>
+      <ULabel
+          v-if="label"
+          :for="id"
+          :required="required"
+      >
+        {{ label }} {{ step }}
+      </ULabel>
     </slot>
 
-    <div :class="[colorInput, boxInputStyles({ disabled })]">
-      <span v-if="$slots.slotLeft" class="pl-3 -mr-1 relative z-10">
-        <slot name="slotLeft" />
-      </span>
-
-      <input
-          :id="id"
-          ref="inputNumber"
-          :value="props.modelValue"
-          type="number"
-          :tabindex="tabindex"
-          :placeholder="placeholder"
-          :required="required"
-          :autocomplete="autocomplete"
-          :disabled="disabled"
-          :class="inputStyles({ size, disabled })"
-          @input="onInput"
-          @keyup="onKeyup"
-          @blur="onBlur"
-          @paste="onPaste"
-      />
-
-      <span v-if="$slots.slotRight" class="pr-3 -ml-1 relative z-10">
-        <slot name="slotRight" />
-      </span>
+    <div class="flex gap-2">
+      <template v-if="props.type === 'grid'">
+        <div class="bg-white">
+          <UButton
+              type="button"
+              :color="colorButton(1)"
+              size="px-3.5 py-3 text-sm"
+              @click="changeNumberWithButton(1)"
+          >
+            1
+          </UButton>
+        </div>
+        <div class="bg-white">
+          <UButton
+              type="button"
+              :color="colorButton(2)"
+              size="px-3.5 py-3 text-sm"
+              @click="changeNumberWithButton(2)"
+          >
+            2
+          </UButton>
+        </div>
+        <div class="bg-white">
+          <UButton
+              type="button"
+              :color="colorButton(3)"
+              size="px-3.5 py-3 text-sm"
+              @click="changeNumberWithButton(3)"
+          >
+            3
+          </UButton>
+        </div>
+        <div class="bg-white">
+          <UButton
+              type="button"
+              :color="colorButton(4)"
+              size="px-3.5 py-3 text-sm"
+              @click="changeNumberWithButton(4)"
+          >
+            4
+          </UButton>
+        </div>
+        <div class="bg-white">
+          <UButton
+              type="button"
+              :color="colorButton(5)"
+              size="px-3.5 py-3 text-sm"
+              @click="changeNumberWithButton(5)"
+          >
+            5
+          </UButton>
+        </div>
+        <div
+            v-if="!showInputNumber"
+            class="bg-white"
+        >
+          <UButton
+              type="button"
+              color="border bg-white hover:border-primary-500"
+              size="px-3.5 py-3 text-sm"
+              @click="onMoreThan5"
+          >
+            Más
+          </UButton>
+        </div>
+      </template>
+      <div
+          v-if="showInputNumber"
+          :class="props.type === 'grid' ? 'inline' : 'w-full h-full'"
+      >
+        <div
+            class="h-full"
+            :class="[colorInput, boxInputStyles({ disabled })]"
+        >
+          <input
+              :id="id"
+              ref="inputForm"
+              v-model="value"
+              type="number"
+              :tabindex="tabindex"
+              :placeholder="placeholder"
+              :required="required"
+              :disabled="disabled"
+              :class="[inputStyles({ size, disabled }), hideArrows && 'number-input-hide-arrows']"
+              :min="min"
+              :max="max"
+              :step="step"
+              @keyup="onKeyup"
+              @blur="onBlur"
+              @paste="onPaste"
+              @change="onChange"
+          />
+        </div>
+      </div>
     </div>
 
-    <div v-if="messageDanger" class="text-sm text-red-500 mt-1">
+    <div
+        v-if="messageDanger"
+        class="text-sm text-red-500 mt-1"
+    >
       {{ messageDanger }}
     </div>
 
-    <div v-else-if="messageWarning" class="text-sm text-yellow-600 mt-1">
+    <div
+        v-else-if="messageWarning"
+        class="text-sm text-yellow-600 mt-1"
+    >
       {{ messageWarning }}
     </div>
 
-    <div v-else-if="messageSuccess" class="text-sm text-green-500 mt-1">
+    <div
+        v-else-if="messageSuccess"
+        class="text-sm text-green-300 mt-1"
+    >
       {{ messageSuccess }}
     </div>
   </div>
