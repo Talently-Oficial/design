@@ -91,27 +91,24 @@ const onchange = (event: Event) => {
   emit('change', event)
 }
 
-const onchangeInput = (type: string, value: number) => {
+const onEventInput = (event: string, type: string, value: number) => {
+  const newValue = [...model.value]
+
   if (type === 'min') {
-    emit('change', [value, model.value[1]])
+    newValue[0] = value
   }
 
   if (type === 'max') {
-    emit('change', [model.value[0], value])
+    newValue[1] = value
   }
-}
 
-const onBlur = () => {
-  emit('blur', model.value)
-}
-
-const onPaste = () => {
-  emit('paste', model.value)
+  model.value = newValue
+  emit(event, newValue)
 }
 </script>
 
 <template>
-  <div>
+  <div class="relative z-0">
     <VueSlider
         width="100%"
         v-model="model"
@@ -126,6 +123,7 @@ const onPaste = () => {
         :tooltip="props.tooltip"
         :dot-size="24"
         :height="8"
+        :duration="0.3"
         @change="onchange"
         @drag-start="onDragStart"
         @dragging="onDragging"
@@ -134,30 +132,30 @@ const onPaste = () => {
 
     <div v-if="isShowInputs" class="flex gap-2 justify-between" :class="inputBoxClass">
       <div class="w-full max-w-36">
-        <ULabel margin="mb-0">{{ props.labelMinRange }}</ULabel>
+        <ULabel margin="mb-0.5">{{ props.labelMinRange }}</ULabel>
         <UInputNumber
             v-model="model[0]"
             :min="props.min"
-            :max="props.max"
+            :max="model[1]"
             :disabled="props.disabled"
             :step="props.stepInputs || props.step"
-            @change="onchangeInput('min', $event)"
-            @blur="onBlur"
-            @paste="onPaste"
+            @change="onEventInput('change', 'min', $event)"
+            @blur="onEventInput('blur', 'min', $event)"
+            @paste="onEventInput('paste', 'min', $event)"
         />
       </div>
 
       <div class="w-full max-w-36">
-        <ULabel margin="mb-0">{{ props.labelMaxRange }}</ULabel>
+        <ULabel margin="mb-0.5">{{ props.labelMaxRange }}</ULabel>
         <UInputNumber
             v-model="model[1]"
-            :min="props.min"
+            :min="model[0]"
             :max="props.max"
             :disabled="props.disabled"
             :step="props.stepInputs || props.step"
-            @change="onchangeInput('max', $event)"
-            @blur="onBlur"
-            @paste="onPaste"
+            @change="onEventInput('change', 'max', $event)"
+            @blur="onEventInput('blur', 'max', $event)"
+            @paste="onEventInput('paste', 'max', $event)"
         />
       </div>
     </div>
