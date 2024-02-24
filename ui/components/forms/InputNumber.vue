@@ -114,14 +114,14 @@ const value = computed({
     return props.modelValue
   },
   set(value) {
-    emit('update:modelValue', value)
+    emit('update:modelValue', Number(value))
   },
 })
 
-const onChange = (event) => emit('change', event.target.value)
-const onKeyup = (event) => emit('keyup', event.target.value)
-const onBlur = (event) => emit('blur', event.target.value)
-const onPaste = (event) => emit('paste', event.target.value)
+const onChange = (event) => emit('change', Number( event.target.value))
+const onKeyup = (event) => emit('keyup', Number(event.target.value))
+const onBlur = (event) => emit('blur', Number(event.target.value))
+const onPaste = (event) => emit('paste', Number(event.target.value))
 
 const changeNumberWithButton = (val) => {
   moreThan5.value = false
