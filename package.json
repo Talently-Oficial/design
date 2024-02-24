@@ -1,18 +1,14 @@
 {
   "private": true,
   "scripts": {
-    "build": "nuxi build",
-    "dev": "nuxi dev",
-    "dev:ui": "pnpm -C ./histoire dev",
-    "generate": "nuxi generate",
-    "preview": "nuxi preview",
+    "dev": "pnpm -C ./histoire dev",
     "postinstall": "nuxi prepare"
   },
   "devDependencies": {
     "@nuxt/content": "^2.9.0",
     "@nuxt/image": "^1.1.0",
     "@nuxtjs/tailwindcss": "^6.10.4",
-    "nuxt": "^3.8.2",
+    "nuxt": "^3.10.3",
     "nuxt-icon": "^0.6.7"
   },
   "dependencies": {
