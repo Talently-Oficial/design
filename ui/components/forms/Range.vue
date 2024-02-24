@@ -66,9 +66,7 @@ const props = defineProps({
 const isShowInputs = computed(() => {
   if (Array.isArray(model.value)) {
     if (model.value.length === 2) {
-      if (typeof model.value[0] === 'number' && typeof model.value[1] === 'number') {
-        return props.showInputs
-      }
+      return props.showInputs
     }
   }
 
@@ -176,12 +174,8 @@ const onEventInput = (event: string, type: string, value: number) => {
 
 /* rail style */
 .vue-slider-rail {
-  background-color: whitesmoke;
+  background-color: theme('colors.gray.300');
   border-radius: 15px;
-  transition: background-color 0.3s;
-}
-.vue-slider:hover .vue-slider-rail {
-  background-color: #e1e1e1;
 }
 
 /* process style */

@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { logEvent } from 'histoire/client'
-const range = ref([0, 500])
+import { logEvent } from "histoire/client";
+const range = ref([0, 500]);
 </script>
 
 <template>
-  <Story title="UI/forms/Range" icon="vscode-icons:file-type-vue" autoPropsDisabled :layout="{ type: 'single' }">
-    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+  <Story
+    title="UI/forms/Range"
+    icon="vscode-icons:file-type-vue"
+    autoPropsDisabled
+    :layout="{ type: 'single' }"
+  >
+    <div>
       <div class="w-full">
         <URange
-            v-model="range"
-            class="px-4"
-            tooltip="none"
-            :step="500"
-            :min="0"
-            :max="20000"
-            @blur="logEvent('blur', $event)"
-            @drag-end="logEvent('drag-end', $event)"
+          v-model="range"
+          class="px-4"
+          tooltip="none"
+          :step="500"
+          :min="0"
+          :max="20000"
+          @blur="logEvent('blur', $event)"
+          @drag-end="logEvent('drag-end', $event)"
         />
       </div>
     </div>
