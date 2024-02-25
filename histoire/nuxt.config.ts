@@ -2,7 +2,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-    modules: ['@nuxtjs/tailwindcss', 'nuxt-icon'],
+    modules: ['@nuxtjs/tailwindcss'],
     extends: ['../ui'],
     devtools: {
         enabled: true
