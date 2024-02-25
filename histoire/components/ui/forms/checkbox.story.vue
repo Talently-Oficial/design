@@ -14,7 +14,7 @@ const value = ref([])
 </script>
 
 <template>
-  <Story title="UI/forms/Checkbox" icon="vscode-icons:file-type-vue" autoPropsDisabled :layout="{ type: 'single' }">
+  <Story title="UI/forms/Checkbox" icon="vscode-icons:file-type-vue" autoPropsDisabled>
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
       <div>
         <div>

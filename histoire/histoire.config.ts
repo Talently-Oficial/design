@@ -12,9 +12,9 @@ export default defineConfig({
     theme: {
         title: 'Talently',
         logo: {
-          square: './assets/images/square.png',
-          light: './assets/images/light-logo.png',
-          dark: './assets/images/dark-logo.png',
+          square: './assets/images/talently-logo-iso.svg',
+          light: './assets/images/talently-logo.svg',
+          dark: './assets/images/talently-logo-white.svg',
         },
         colors: {
             primary: {

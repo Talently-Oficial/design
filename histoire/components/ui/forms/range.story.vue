@@ -7,11 +7,8 @@ const range = ref([0, 500]);
   <Story
     title="UI/forms/Range"
     icon="vscode-icons:file-type-vue"
-    autoPropsDisabled
-    :layout="{ type: 'single' }"
   >
-    <div>
-      <div class="w-full">
+    <div class="min-h-screen flex items-center justify-center">
         <URange
           v-model="range"
           class="px-4"
@@ -22,7 +19,6 @@ const range = ref([0, 500]);
           @blur="logEvent('blur', $event)"
           @drag-end="logEvent('drag-end', $event)"
         />
-      </div>
     </div>
 
     <!--    <template #controls>-->
