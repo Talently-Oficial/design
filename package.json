@@ -5,10 +5,10 @@
     "postinstall": "nuxi prepare"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.10.4",
     "nuxt": "^3.10.3"
   },
   "dependencies": {
+    "@nuxt/ui": "^2.14.1",
     "@popperjs/core": "^2.11.8"
   }
 }
