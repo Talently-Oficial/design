@@ -38,17 +38,22 @@ export default defineConfig({
             return a.localeCompare(b);
         },
         groups: [
-            {
-                id: 'top',
-                title: '', // No toggle
-            },
+            // {
+            //     id: 'top',
+            //     title: 'sadas', // No toggle
+            // },
             // {
             //     title: 'My Group',
             //     include: file => /Code gen|Controls|Docs/.test(file.title),
             // },
             {
                 title: 'Components',
-                include: file => !file.title.includes('Serialize'),
+                include: file => /ui/.test(file.path)
+                ,
+            },
+            {
+                title: 'Packages',
+                include: file => /packages/.test(file.path),
             },
             // {
             //     title: 'Others',

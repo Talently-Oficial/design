@@ -5,7 +5,7 @@ const range = ref([0, 500]);
 
 <template>
   <Story
-    title="UI/forms/Range"
+    title="forms/Range"
     icon="vscode-icons:file-type-vue"
   >
     <div class="min-h-screen flex items-center justify-center">

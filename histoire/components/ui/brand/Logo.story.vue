@@ -1,5 +1,5 @@
 <template>
-  <Story title="UI/brand/Logo" icon="vscode-icons:file-type-vue" :layout="{ type: 'grid' }">
+  <Story title="brand/Logo" icon="vscode-icons:file-type-vue" :layout="{ type: 'grid' }">
     <Variant title="Default" icon="vscode-icons:file-type-vue">
       <div class="p-3 rounded">
         <ULogo class="w-32" />

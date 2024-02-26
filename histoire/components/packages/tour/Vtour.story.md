@@ -4,8 +4,6 @@ title: 'VTour/Introducción'
 ---
 
 
-
-
 # VTour
 
 Este componente es una modificación de [vue-tour](https://github.com/pulsardev/vue-tour), es el paquete más popular de vue pero no tenia el feature que necesitábamos.

@@ -1,5 +1,5 @@
 <template>
-  <Story title="UI/forms/Input" icon="vscode-icons:file-type-vue" autoPropsDisabled>
+  <Story title="forms/Input" icon="vscode-icons:file-type-vue" autoPropsDisabled>
     <div class="min-h-screen flex items-center justify-center">
         <UInput placeholder="Example" />
     </div>
