@@ -11,7 +11,7 @@ const range = ref([0, 500]);
     <div class="min-h-screen flex items-center justify-center">
         <URange
           v-model="range"
-          class="px-4"
+          class="px-8 w-full"
           tooltip="none"
           :step="500"
           :min="0"
