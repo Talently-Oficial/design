@@ -5,7 +5,7 @@ const content = ref('')
 <template>
   <Story title="UI/forms/Textarea" icon="vscode-icons:file-type-vue">
     <div class="min-h-screen flex items-center justify-center">
-        <UTextarea v-model="content" />
+      <UTextarea v-model="content" />
     </div>
 
 <!--    <template #controls>-->

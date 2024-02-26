@@ -11,9 +11,6 @@ importers:
       '@nuxt/ui':
         specifier: ^2.14.1
         version: 2.14.1(nuxt@3.10.3)(vite@5.1.4)(vue@3.4.19)
-      '@popperjs/core':
-        specifier: ^2.11.8
-        version: 2.11.8
     devDependencies:
       nuxt:
         specifier: ^3.10.3

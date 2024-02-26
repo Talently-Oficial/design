@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "nuxi build",
     "dev": "nuxi dev",

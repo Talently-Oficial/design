@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "pnpm -C ./histoire dev",
     "postinstall": "nuxi prepare"
@@ -8,7 +8,6 @@
     "nuxt": "^3.10.3"
   },
   "dependencies": {
-    "@nuxt/ui": "^2.14.1",
-    "@popperjs/core": "^2.11.8"
+    "@nuxt/ui": "^2.14.1"
   }
 }
