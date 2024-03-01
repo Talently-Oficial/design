@@ -38,6 +38,9 @@ importers:
       vue-slider-component:
         specifier: 4.1.0-beta.7
         version: 4.1.0-beta.7
+      vue-strapi-blocks-renderer:
+        specifier: ^0.2.0
+        version: 0.2.0(vue@3.4.19)
 
 packages:
 
@@ -7240,6 +7243,15 @@ packages:
 
   /vue-slider-component@4.1.0-beta.7:
     resolution: {integrity: sha512-Qb7K920ZG7PoQswoF6Ias+i3W2rd3k4fpk04JUl82kEUcN86Yg6et7bVSKWt/7VpQe8a5IT3BqCKSCOZ7AJgCA==}
+    dev: false
+
+  /vue-strapi-blocks-renderer@0.2.0(vue@3.4.19):
+    resolution: {integrity: sha512-AE6JrIUPiGUTLg1e76CwoxnH5eTaqXINvcqHIKtjAL4z5aeifHVDJbonlF8x+50GoC6T2mnZiNikiwMlJDxzTw==}
+    peerDependencies:
+      typescript: latest
+      vue: latest
+    dependencies:
+      vue: 3.4.19
     dev: false
 
   /vue@3.4.19:
