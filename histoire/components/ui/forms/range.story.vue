@@ -4,21 +4,18 @@ const range = ref([0, 500]);
 </script>
 
 <template>
-  <Story
-    title="forms/Range"
-    icon="vscode-icons:file-type-vue"
-  >
+  <Story title="forms/Range" icon="vscode-icons:file-type-vue">
     <div class="min-h-screen flex items-center justify-center">
-        <URange
-          v-model="range"
-          class="px-8 w-full"
-          tooltip="none"
-          :step="500"
-          :min="0"
-          :max="20000"
-          @blur="logEvent('blur', $event)"
-          @drag-end="logEvent('drag-end', $event)"
-        />
+      <URange
+        v-model="range"
+        class="px-8 w-full"
+        tooltip="none"
+        :step="500"
+        :min="0"
+        :max="20000"
+        @blur="logEvent('blur', $event)"
+        @drag-end="logEvent('drag-end', $event)"
+      />
     </div>
 
     <!--    <template #controls>-->

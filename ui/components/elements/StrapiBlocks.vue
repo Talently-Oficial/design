@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { StrapiBlocks } from 'vue-strapi-blocks-renderer'
+import { StrapiBlocks } from "vue-strapi-blocks-renderer";
 const props = defineProps<{
-  content: any[]
-}>()
+  content: any[];
+}>();
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const props = defineProps<{
   h6 {
     margin: 0 0 0.7em;
     line-height: 1.35;
-    @apply text-gray-800 font-semibold;
+    @appl font-semibold;
   }
 
   h1 {
@@ -144,7 +144,7 @@ const props = defineProps<{
 
   strong,
   b {
-    @apply text-gray-800 font-semibold;
+    @apply font-semibold;
   }
 
   figcaption {
