@@ -1,7 +1,4 @@
 <script setup>
-import { computed } from 'vue'
-import Label from '~/components/forms/Label.vue'
-
 import {
   boxInputStyles,
   inputStyles,
@@ -109,9 +106,9 @@ const onPaste = (event) => emit('paste', event.target.value)
 <template>
   <div>
     <slot name="label">
-      <Label v-if="label" :for="id">
-        {{ label }} <span v-if="required" class="text-red-500">*</span>
-      </Label>
+      <ULabel v-if="label" :for="id" :required="required">
+        {{ label }}
+      </ULabel>
     </slot>
 
     <div :class="[colorInput, boxInputStyles({ disabled })]">
