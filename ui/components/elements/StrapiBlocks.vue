@@ -21,7 +21,7 @@ const props = defineProps<{
   h6 {
     margin: 0 0 0.7em;
     line-height: 1.35;
-    @appl font-semibold;
+    @apply font-semibold;
   }
 
   h1 {

@@ -46,13 +46,22 @@ const props = defineProps({
     default: () => (
         {
           divide : 'divide-y-0',
-          body: { padding: 'px-4 sm:px-6 py-0 sm:py-0' }
+          header: {padding: 'pb-0 sm:pb-0'},
+          footer: {padding: 'pt-0 sm:pt-0'}
         }
     ),
+  },
+  hiddenCancel: {
+    type: Boolean,
+    default: false,
   },
   cancelText: {
     type: String,
     default: 'Cancel',
+  },
+  cancelHandler: {
+    type: Function,
+    default: null
   },
   okText: {
     type: String,
@@ -62,9 +71,38 @@ const props = defineProps({
     type: String,
     default: 'primary',
   },
+  okHandler: {
+    type: Function,
+    default: null
+  },
+  okLoading: {
+    type: Boolean,
+    default: false
+  },
 })
 
 const model = defineModel()
+
+const closeModalButton = () => {
+  if (props.okLoading) return
+  model.value = false
+}
+
+const defaultCancelHandler = () => {
+  if (props.cancelHandler) {
+    props.cancelHandler()
+    return
+  }
+  model.value = false
+}
+
+const defaultOkHandler = () => {
+  if (props.okHandler) {
+    props.okHandler()
+    return
+  }
+  model.value = false
+}
 </script>
 
 <template>
@@ -73,7 +111,7 @@ const model = defineModel()
       :transition="props.transition"
       :overlay="props.overlay"
       :fullscreen="props.fullscreen"
-      :preventClose="props.preventClose"
+      :preventClose="props.preventClose || props.okLoading"
       :ui="props.ui"
   >
     <UCard class="h-full" :ui="props.uiCard">
@@ -85,9 +123,10 @@ const model = defineModel()
             </slot>
 
             <button
-                v-if="showClose"
-                @click="model = false"
+                v-if="props.showClose"
+                @click="closeModalButton"
                 class="flex items-center"
+                :disabled="props.okLoading"
             >
               <UIcon
                   class="text-xl leading-none"
@@ -101,22 +140,28 @@ const model = defineModel()
 
       <slot/>
 
-      <template v-if="!hiddenFooter" #footer>
+      <template v-if="!props.hiddenFooter" #footer>
         <slot name="footer">
-          <div class="flex items-center justify-end gap-2">
+          <div class="flex items-center flex-wrap justify-end gap-2">
             <Button
+                type="button"
+                v-if="!props.hiddenCancel"
                 color="white"
                 size="md"
-                @click="model = false"
+                @click="defaultCancelHandler"
+                :disabled="props.okLoading"
             >
-              {{ cancelText }}
+              {{ props.cancelText }}
             </Button>
 
             <Button
+                type="button"
                 size="md"
-                @click="model = false"
+                :color="props.okColor"
+                @click="defaultOkHandler"
+                :loading="props.okLoading"
             >
-              {{ okText }}
+              {{ props.okText }}
             </Button>
           </div>
         </slot>
