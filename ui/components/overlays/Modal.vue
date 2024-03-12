@@ -57,7 +57,7 @@ const props = defineProps({
   },
   cancelText: {
     type: String,
-    default: 'Cancel',
+    default: 'Cancelar',
   },
   cancelHandler: {
     type: Function,
@@ -65,11 +65,19 @@ const props = defineProps({
   },
   okText: {
     type: String,
-    default: 'Ok',
+    default: 'Aceptar',
   },
   okColor: {
     type: String,
     default: 'primary',
+  },
+  okTypeButton: {
+    type: String,
+    default: 'button',
+  },
+  okIdForm: {
+    type: String,
+    default: null,
   },
   okHandler: {
     type: Function,
@@ -81,11 +89,13 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['close'])
 const model = defineModel()
 
 const closeModalButton = () => {
   if (props.okLoading) return
   model.value = false
+  emit('close', 'close-button')
 }
 
 const defaultCancelHandler = () => {
@@ -94,6 +104,7 @@ const defaultCancelHandler = () => {
     return
   }
   model.value = false
+  emit('close', 'cancel')
 }
 
 const defaultOkHandler = () => {
@@ -102,6 +113,7 @@ const defaultOkHandler = () => {
     return
   }
   model.value = false
+  emit('close', 'ok')
 }
 </script>
 
@@ -113,6 +125,7 @@ const defaultOkHandler = () => {
       :fullscreen="props.fullscreen"
       :preventClose="props.preventClose || props.okLoading"
       :ui="props.ui"
+      @close="emit('close', 'overlay')"
   >
     <UCard class="h-full" :ui="props.uiCard">
       <template v-if="!hiddenHeader" #header>
@@ -155,7 +168,8 @@ const defaultOkHandler = () => {
             </Button>
 
             <Button
-                type="button"
+                :type="okTypeButton"
+                :form="okIdForm"
                 size="md"
                 :color="props.okColor"
                 @click="defaultOkHandler"
