@@ -144,7 +144,7 @@ const onMoreThan5 = () => {
           :for="id"
           :required="required"
       >
-        {{ label }} {{ step }}
+        {{ label }}
       </ULabel>
     </slot>
 
