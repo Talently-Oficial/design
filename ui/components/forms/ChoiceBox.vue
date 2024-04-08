@@ -13,7 +13,7 @@
     <slot name="control" :active="isChecked">
       <span
         v-if="type === 'checkbox'"
-        class="w-4 h-4 rounded flex items-center justify-center border"
+        class="w-4 h-4 rounded flex items-center justify-center border flex-shrink-0"
         :class="[classControl, colorCheckBox]"
       >
         <Icon
@@ -26,7 +26,7 @@
 
       <span
         v-if="type === 'radio'"
-        class="w-4 h-4 rounded-full flex items-center justify-center border"
+        class="w-4 h-4 rounded-full flex items-center justify-center border flex-shrink-0"
         :class="[classControl, colorRadio]"
       >
         <span
