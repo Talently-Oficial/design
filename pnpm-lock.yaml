@@ -41,6 +41,9 @@ importers:
       vue-strapi-blocks-renderer:
         specifier: ^0.2.0
         version: 0.2.0(vue@3.4.19)
+      vue-tel-input:
+        specifier: ^8.3.1
+        version: 8.3.1
 
 packages:
 
@@ -4473,6 +4476,10 @@ packages:
     dependencies:
       readable-stream: 2.3.8
 
+  /libphonenumber-js@1.10.60:
+    resolution: {integrity: sha512-Ctgq2lXUpEJo5j1762NOzl2xo7z7pqmVWYai0p07LvAkQ32tbPv3wb+tcUeHEiXhKU5buM4H9MXsXo6OlM6C2g==}
+    dev: false
+
   /lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
@@ -7252,6 +7259,15 @@ packages:
       vue: latest
     dependencies:
       vue: 3.4.19
+    dev: false
+
+  /vue-tel-input@8.3.1:
+    resolution: {integrity: sha512-+YMFf1Dq/H9xJ2QQ0dDtPrCRNdfWCMCZ78/29qV9BJ9cf7BAFv4jpBPNQU4DyOqoOd0BEujVw9SRJ+fcXPO21Q==}
+    dependencies:
+      libphonenumber-js: 1.10.60
+      vue: 3.4.19
+    transitivePeerDependencies:
+      - typescript
     dev: false
 
   /vue@3.4.19:
