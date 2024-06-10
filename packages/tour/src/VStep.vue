@@ -27,7 +27,7 @@
             }"
           >
             <div>
-              <Button
+              <UButton
                   v-if="!isLast && isButtonEnabled('buttonSkip')"
                   class="v-step__button v-step__button-skip"
                   size="sm"
@@ -35,39 +35,36 @@
                   @click.native.prevent="skip"
               >
                 <span class="font-semibold"> {{ labels.buttonSkip }}</span>
-              </Button>
+              </UButton>
             </div>
 
             <div>
-              <Button
+              <UButton
                   v-if="!isFirst && isButtonEnabled('buttonPrevious')"
                   class="v-step__button v-step__button-previous"
                   size="sm"
-                  color="flat"
-                  @click.native.prevent="previousStep"
+                  @click.prevent="previousStep"
               >
                 <span class="font-semibold"> {{ labels.buttonPrevious }}</span>
-              </Button>
+              </UButton>
 
-              <Button
+              <UButton
                   v-if="!isLast && isButtonEnabled('buttonNext')"
                   class="v-step__button v-step__button-next"
                   size="sm"
-                  color="purple"
-                  @click.native.prevent="nextStep"
+                  @click.prevent="nextStep"
               >
                 {{ labels.buttonNext }}
-              </Button>
+              </UButton>
 
-              <Button
+              <UButton
                   v-if="isLast && isButtonEnabled('buttonStop')"
                   class="v-step__button v-step__button-stop"
                   size="sm"
-                  color="purple"
                   @click.native.prevent="finish"
               >
                 {{ labels.buttonStop }}
-              </Button>
+              </UButton>
             </div>
           </div>
         </div>
@@ -81,11 +78,9 @@
 <script>
 import { createPopper } from '@popperjs/core'
 import { DEFAULT_OPTIONS, DEFAULT_STEP_OPTIONS, HIGHLIGHT } from './constants'
-import Button from '../../ui/components/elements/button/Button.vue'
 
 export default {
   name: 'VStep',
-  components: { Button },
   props: {
     step: {
       type: Object,
