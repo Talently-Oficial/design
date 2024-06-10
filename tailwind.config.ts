@@ -1,9 +1,8 @@
 // https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
 
 import defaultTheme from 'tailwindcss/defaultTheme'
-import tailwindColors from 'tailwindcss/colors'
 
-const brand = {
+export const brand = {
     purple: {
         50: '#F6F1FB',
         100: '#E9D8F9',
@@ -129,64 +128,6 @@ const customTailwind = {
             '5xl': '1440px',
             '6xl': '1920px',
         },
-        colors: {
-            // Brand
-            primary: {
-                ...brand.purple,
-            },
-            neutral: {
-                ...brand.neutral,
-            },
-            purple: {
-                ...brand.purple,
-            },
-            orange: {
-                ...brand.orange,
-            },
-            'quiet-blue': {
-                ...brand['quiet-blue'],
-            },
-            pink: {
-                ...brand.pink,
-            },
-            neon: {
-                ...brand.neon,
-            },
-            red: {
-                ...brand.red,
-            },
-            yellow: {
-                ...brand.yellow,
-            },
-            green: {
-                ...brand.green,
-            },
-            gray: {
-                50: '#F7F7F8',
-                100: '#eeeef0',
-                200: '#d9d9de',
-                300: '#B8B9C1',
-                400: '#92939e',
-                500: '#747583',
-                600: '#5E5F6B',
-                700: '#4D4E57',
-                800: '#42424A',
-                900: '#3A3A40',
-            },
-
-            // Natives
-            inherit: 'inherit',
-            current: 'currentColor',
-            transparent: 'transparent',
-            black: '#000',
-            white: '#fff',
-            blue: {
-                ...tailwindColors.blue,
-            },
-            cyan: {
-                ...tailwindColors.cyan,
-            },
-        },
         fontSize: {
             0: '0',
             xxs: '0.5rem',
@@ -224,6 +165,9 @@ const customTailwind = {
             '9xl': ['8rem', { lineHeight: '1' }],
         },
         extend: {
+            colors: {
+                ...brand,
+            },
             letterSpacing: {
                 tight: '-0.009em',
             },

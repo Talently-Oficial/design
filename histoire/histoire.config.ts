@@ -1,7 +1,7 @@
 import { defineConfig } from 'histoire'
 import { HstVue } from '@histoire/plugin-vue'
 import { HstNuxt } from '@histoire/plugin-nuxt'
-import customTailwind from "../tailwind.config";
+import {brand} from "../tailwind.config";
 
 export default defineConfig({
     plugins: [
@@ -18,15 +18,15 @@ export default defineConfig({
         },
         colors: {
             primary: {
-                50: customTailwind.theme.colors.primary["50"],
-                100: customTailwind.theme.colors.primary["100"],
-                200: customTailwind.theme.colors.primary["200"],
-                300: customTailwind.theme.colors.primary["300"],
-                400: customTailwind.theme.colors.primary["600"],
-                500: customTailwind.theme.colors.primary["700"],
-                600: customTailwind.theme.colors.primary["700"],
-                700: customTailwind.theme.colors.primary["700"],
-                800: customTailwind.theme.colors.primary["700"],
+                50: brand.purple["50"],
+                100: brand.purple["100"],
+                200: brand.purple["200"],
+                300: brand.purple["300"],
+                400: brand.purple["600"],
+                500: brand.purple["700"],
+                600: brand.purple["700"],
+                700: brand.purple["700"],
+                800: brand.purple["700"],
                 900: '#4f465b',
             },
         }
