@@ -1,3 +1,7 @@
+// https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
+
+import defaultTheme from 'tailwindcss/defaultTheme'
+
 const brand = {
     purple: {
         50: '#F6F1FB',
@@ -92,11 +96,24 @@ const brand = {
 }
 
 const customTailwind = {
+    content: [
+        'components/**/*.{vue,js,ts}',
+        'layouts/**/*.vue',
+        'pages/**/*.vue',
+        'composables/**/*.{js,ts}',
+        'plugins/**/*.{js,ts}',
+        'App.{js,ts,vue}',
+        'app.{js,ts,vue}',
+        'Error.{js,ts,vue}',
+        'error.{js,ts,vue}',
+        'content/**/*.md',
+        'nuxt.config.{js,ts}',
+    ],
     theme: {
-        // fontFamily: {
-        //     sans: ['"NB International Pro Book"'],
-        //     body: ['"NB International Pro"'],
-        // },
+        fontFamily: {
+            sans: ['"NB International Pro Book"', ...defaultTheme.fontFamily.sans],
+            body: ['"NB International Pro"'],
+        },
         screens: {
             xxs: '320px',
             xs: '375px',
@@ -199,4 +216,4 @@ const customTailwind = {
     },
 }
 
-module.exports = customTailwind
+export default customTailwind
