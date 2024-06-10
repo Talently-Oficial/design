@@ -1,6 +1,6 @@
 <script setup>
 import { useNuxtApp } from '#app'
-import VTour from '../../../packages/tour/src/VTour.vue'
+import VTour from '../../../../packages/tour/src/VTour.vue'
 
 const counter = ref(0)
 const options = ref({
@@ -55,15 +55,15 @@ const startTourHighlight = (step = 0) => {
     <div class="min-h-screen flex items-center justify-center">
       <div class="flex justify-center flex-wrap items-center gap-5">
         <div data-tour="step-1">
-          <UButton color="outline" class="w-32" @click="startTourHighlight()">Inicio</UButton>
+          <UButton variant="outline" class="w-32" @click="startTourHighlight()">Inicio</UButton>
         </div>
 
         <div data-tour="step-2">
-          <UButton color="outline" class="w-32" @click="counter = counter + 1">Count {{ counter }}</UButton>
+          <UButton variant="outline" class="w-32" @click="counter = counter + 1">Count {{ counter }}</UButton>
         </div>
 
         <div data-tour="step-3">
-          <UButton color="outline" class="w-32" @click="startTourHighlight(2)">Fin</UButton>
+          <UButton variant="outline" class="w-32" @click="startTourHighlight(2)">Fin</UButton>
         </div>
       </div>
     </div>
