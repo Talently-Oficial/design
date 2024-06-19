@@ -1,7 +1,7 @@
 <script setup>
 import { useNuxtApp } from '#app'
-import VTour from '../../../packages/tour/src/VTour.vue'
-import {DEFAULT_OPTIONS} from "../../../packages/tour/src/constants";
+import VTour from '../../../../packages/tour/src/VTour.vue'
+import {DEFAULT_OPTIONS} from "../../../../packages/tour/src/constants";
 
 const options = ref({...DEFAULT_OPTIONS})
 const steps = ref([
@@ -38,11 +38,11 @@ const startTourHighlight = (step = 0) => {
     <div class="min-h-screen flex items-center justify-center">
       <div class="flex justify-center flex-wrap items-center gap-5">
         <div data-tour="step-1">
-          <UButton color="outline" class="w-32" @click="startTourHighlight()">Inicio</UButton>
+          <UButton variant="outline" class="w-32" @click="startTourHighlight()">Inicio</UButton>
         </div>
 
         <div data-tour="step-3">
-          <UButton color="outline" class="w-32">Fin</UButton>
+          <UButton variant="outline" class="w-32">Fin</UButton>
         </div>
       </div>
     </div>
