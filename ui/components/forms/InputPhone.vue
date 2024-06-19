@@ -2,20 +2,11 @@
 import { VueTelInput } from 'vue-tel-input'
 import 'vue-tel-input/vue-tel-input.css'
 
+const model = defineModel()
+const country = defineModel('country')
+
 const props = defineProps({
   id: {
-    type: String,
-    default: null,
-  },
-  modelValue: {
-    type: [String, Number],
-    default: '',
-  },
-  defaultCountry: {
-    type: [String, Number],
-    default: null,
-  },
-  countryCode: {
     type: String,
     default: null,
   },
@@ -49,21 +40,9 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  labelClass: {
-    type: String,
-    default: 'text-neutral-700 text-base',
-  },
-  requiredClass: {
-    type: String,
-    default: 'text-red-500',
-  },
-  isSetPhone: {
-    type: Boolean,
-    default: false,
-  },
 })
 
-const emit = defineEmits(['update:modelValue', 'update:country', 'input', 'validate', 'blur'])
+const emit = defineEmits(['validate', 'blur'])
 
 const dropdownOptions = ref({
   showFlags: true,
@@ -77,11 +56,6 @@ const inputOptions = ref({
   required: true,
   autocomplete: props.autocomplete,
 })
-const form = ref({
-  phone: null,
-  country_code: null,
-  raw: null,
-})
 const showErrors = ref(false)
 const errors = ref({
   phone: '',
@@ -90,29 +64,24 @@ const errors = ref({
 
 const countryChanged = (data) => {
   if (!data.dialCode) return
-  form.value.country_code = Number(data.dialCode)
-  emit('update:country', Number(data.dialCode))
+  country.value = Number(data.dialCode)
 }
 
 const phoneInput = () => {
-  form.value.phone.replace(/ /g, '')
+  let phone =  model.value.replace(/ /g, '')
+  const prefix = `+${country.value}`
 
-  const prefix = `+${form.value.country_code}`
-
-  if (form.value.phone.includes(prefix)) {
-    form.value.phone = form.value.phone.substring(prefix.length)
+  if (phone.includes(prefix)) {
+    phone = phone.substring(prefix.length)
   }
 
-  emit('input', form.value)
-
-  emit('update:modelValue', form.value.phone)
+  model.value = phone
 }
 
 const phoneValidate = (phoneObject) => {
-  form.value.raw = phoneObject
-  emit('validate', form.value.raw?.valid || false)
+  emit('validate', phoneObject?.valid || false)
 
-  if (form.value.raw?.valid) {
+  if (phoneObject?.valid) {
     errors.value.phone = ''
   } else {
     errors.value.phone = 'Número de teléfono inválido'
@@ -123,16 +92,6 @@ const phoneBlur = () => {
   showErrors.value = true
   emit('blur')
 }
-
-watch(
-    () => props.isSetPhone,
-    (value) => {
-      if (value === true) {
-        form.value.phone = props.modelValue
-      }
-    },
-    { deep: true },
-)
 </script>
 
 <template>
@@ -149,13 +108,13 @@ watch(
 
     <VueTelInput
         ref="pluginPhone"
-        v-model="form.phone"
+        v-model="model"
         :tabindex="tabindex"
         class="input-phone"
         :input-options="inputOptions"
         :dropdown-options="dropdownOptions"
         :valid-characters-only="true"
-        :default-country="defaultCountry"
+        :default-country="country"
         :auto-default-country="false"
         :auto-format="false"
         :required="required"
@@ -192,7 +151,6 @@ watch(
       @apply bg-transparent;
     }
   }
-
 
   .vti__dropdown-arrow {
     transform: scale(.5);
