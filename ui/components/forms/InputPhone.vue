@@ -1,106 +1,138 @@
 <script setup>
 import { VueTelInput } from 'vue-tel-input'
 import 'vue-tel-input/vue-tel-input.css'
-import {
-	boxInputStyles,
-	inputStyles,
-	dangerColor,
-	defaultColor,
-	successColor,
-	warningColor,
-} from './input-styles'
 
 const props = defineProps({
-	modelValue: {
-		type: [String, Number],
-		default: '',
-	},
-	id: {
-		type: String,
-		default: null,
-	},
-	tabindex: {
-		type: String,
-		default: null,
-	},
-	country: {
-		type: [Number, String],
-		default: '',
-	},
-	type: {
-		type: String,
-		default: 'text',
-	},
-	label: {
-		type: String,
-		default: '',
-	},
-	placeholder: {
-		type: String,
-		default: '',
-	},
-	required: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
-	size: {
-		type: String,
-		default: 'md',
-	},
-	autocomplete: {
-		type: String,
-		default: null,
-	},
-	messageSuccess: {
-		type: String,
-		required: false,
-		default: '',
-	},
-	messageWarning: {
-		type: String,
-		required: false,
-		default: '',
-	},
-	messageDanger: {
-		type: String,
-		required: false,
-		default: '',
-	},
-	disabled: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
-	maxLength: {
-		type: Number,
-		required: false,
-		default: 524288,
-	},
+  id: {
+    type: String,
+    default: null,
+  },
+  modelValue: {
+    type: [String, Number],
+    default: '',
+  },
+  defaultCountry: {
+    type: [String, Number],
+    default: null,
+  },
+  countryCode: {
+    type: String,
+    default: null,
+  },
+  tabindex: {
+    type: String,
+    default: '1',
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+  placeholder: {
+    type: String,
+    default: 'Número de celular',
+  },
+  required: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  autocomplete: {
+    type: String,
+    default: 'on',
+  },
+  disabled: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  errorMessage: {
+    type: String,
+    default: '',
+  },
+  labelClass: {
+    type: String,
+    default: 'text-neutral-700 text-base',
+  },
+  requiredClass: {
+    type: String,
+    default: 'text-red-500',
+  },
+  isSetPhone: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const emit = defineEmits(['update:modelValue', 'keyup', 'blur', 'paste', 'country-changed'])
+const emit = defineEmits(['update:modelValue', 'update:country', 'input', 'validate', 'blur'])
 
-const colorInput = computed(() => {
-	if (props.messageDanger) return dangerColor
-	if (props.messageWarning) return warningColor
-	if (props.messageSuccess) return successColor
-	return defaultColor
+const dropdownOptions = ref({
+  showFlags: true,
+  showSearchBox: true,
+  showDialCodeInSelection: true,
+  tabindex: props.tabindex - 1,
+})
+const inputOptions = ref({
+  placeholder: props.placeholder,
+  id: props.id,
+  required: true,
+  autocomplete: props.autocomplete,
+})
+const form = ref({
+  phone: null,
+  country_code: null,
+  raw: null,
+})
+const showErrors = ref(false)
+const errors = ref({
+  phone: '',
+  country_code: '',
 })
 
-const value = computed({
-	get() {
-		return props.modelValue
-	},
-	set(value) {
-		emit('update:modelValue', value)
-	},
-})
+const countryChanged = (data) => {
+  if (!data.dialCode) return
+  form.value.country_code = Number(data.dialCode)
+  emit('update:country', Number(data.dialCode))
+}
 
-const onKeyup = (event) => emit('keyup', event.target.value)
-const onBlur = (event) => emit('blur', event.target.value)
-const onPaste = (event) => emit('paste', event.target.value)
-const countryChanged = (value) => emit('country-changed', value.dialCode)
+const phoneInput = () => {
+  form.value.phone.replace(/ /g, '')
+
+  const prefix = `+${form.value.country_code}`
+
+  if (form.value.phone.includes(prefix)) {
+    form.value.phone = form.value.phone.substring(prefix.length)
+  }
+
+  emit('input', form.value)
+
+  emit('update:modelValue', form.value.phone)
+}
+
+const phoneValidate = (phoneObject) => {
+  form.value.raw = phoneObject
+  emit('validate', form.value.raw?.valid || false)
+
+  if (form.value.raw?.valid) {
+    errors.value.phone = ''
+  } else {
+    errors.value.phone = 'Número de teléfono inválido'
+  }
+}
+
+const phoneBlur = () => {
+  showErrors.value = true
+  emit('blur')
+}
+
+watch(
+    () => props.isSetPhone,
+    (value) => {
+      if (value === true) {
+        form.value.phone = props.modelValue
+      }
+    },
+    { deep: true },
+)
 </script>
 
 <template>
@@ -115,60 +147,102 @@ const countryChanged = (value) => emit('country-changed', value.dialCode)
 			</ULabel>
 		</slot>
 
-		<div :class="[colorInput, boxInputStyles({ disabled })]">
-			<VueTelInput
-				option
-				style="border: 0px"
-				:default-country="country || ''"
-				:dropdiwn-options="{ styleClasses: 'z-50' }"
-				:input-options="{ readonly: true, styleClasses: 'hidden border-white' }"
-				@country-changed="countryChanged"
-			/>
+    <VueTelInput
+        ref="pluginPhone"
+        v-model="form.phone"
+        :tabindex="tabindex"
+        class="input-phone"
+        :input-options="inputOptions"
+        :dropdown-options="dropdownOptions"
+        :valid-characters-only="true"
+        :default-country="defaultCountry"
+        :auto-default-country="false"
+        :auto-format="false"
+        :required="required"
+        :disabled="disabled"
+        @country-changed="countryChanged"
+        @input="phoneInput"
+        @validate="phoneValidate"
+        @blur="phoneBlur"
+    />
 
-			<input
-				:id="id"
-				ref="inputRef"
-				v-model="value"
-				type="number"
-				:tabindex="tabindex"
-				:placeholder="placeholder"
-				:required="required"
-				:autocomplete="autocomplete"
-				:disabled="disabled"
-				:maxlength="maxLength"
-				:class="inputStyles({ size, disabled })"
-				@keyup="onKeyup"
-				@blur="onBlur"
-				@paste="onPaste"
-			/>
-
-			<span
-				v-if="$slots.slotRight"
-				class="pr-3 -ml-1 relative z-10"
-			>
-				<slot name="slotRight" />
-			</span>
-		</div>
-
-		<div
-			v-if="messageDanger"
-			class="text-sm text-red-500 mt-1"
-		>
-			{{ messageDanger }}
-		</div>
-
-		<div
-			v-else-if="messageWarning"
-			class="text-sm text-yellow-600 mt-1"
-		>
-			{{ messageWarning }}
-		</div>
-
-		<div
-			v-else-if="messageSuccess"
-			class="text-sm text-green-300 mt-1"
-		>
-			{{ messageSuccess }}
-		</div>
-	</div>
+    <div
+        v-if="errorMessage || (errors.phone && showErrors)"
+        class="text-sm text-red-500 mt-1"
+    >
+      {{ errorMessage || errors.phone }}
+    </div>
+  </div>
 </template>
+
+<style>
+.input-phone.vue-tel-input {
+  @apply border-2 border-gray-200 border-opacity-80 bg-white rounded-lg;
+
+  &:focus-within {
+    box-shadow: none;
+    @apply border-primary-500;
+  }
+
+  .vti__dropdown {
+    @apply bg-transparent border-r;
+
+    &:hover,
+    &:focus {
+      @apply bg-transparent;
+    }
+  }
+
+
+  .vti__dropdown-arrow {
+    transform: scale(.5);
+    margin-left: 3px;
+  }
+
+  .vti__selection {
+    @apply border-0;
+  }
+
+  .vti__input {
+    @apply m-0 placeholder-neutral-500 border-gray-200 text-sm rounded-l-none rounded-r-lg;
+    padding: 0.7rem;
+  }
+
+  .vti__dropdown-list {
+    z-index: 1000;
+    max-height: 250px;
+    @apply border-gray-200;
+
+    &.below,
+    &.above {
+      width: 250px;
+      padding: 0;
+      @apply rounded-lg;
+    }
+  }
+
+  .vti__dropdown-list.below {
+    top: 48px;
+  }
+
+  .vti__search_box {
+    @apply rounded-lg p-2;
+    box-sizing: border-box;
+    margin: 8px;
+    width: calc(100% - 16px);
+  }
+
+  .vti__dropdown-item {
+    padding: 10px 6px;
+    @apply flex items-center text-neutral-700 text-sm;
+
+    strong {
+      @apply font-medium;
+    }
+  }
+
+  .vti__dropdown-item .vti__flag {
+    @apply mr-2.5;
+  }
+}
+</style>
