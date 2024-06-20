@@ -107,7 +107,6 @@ const phoneBlur = () => {
 		</slot>
 
     <VueTelInput
-        ref="pluginPhone"
         v-model="model"
         :tabindex="tabindex"
         class="input-phone"
@@ -162,8 +161,7 @@ const phoneBlur = () => {
   }
 
   .vti__input {
-    @apply m-0 placeholder-neutral-500 border-gray-200 text-sm rounded-l-none rounded-r-lg;
-    padding: 0.7rem;
+    @apply m-0 placeholder-neutral-500 text-gray-900 py-2 px-3 rounded-r-lg;
   }
 
   .vti__dropdown-list {
