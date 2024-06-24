@@ -1,4 +1,5 @@
 packages:
   - 'histoire'
-  - 'packages/**'
   - 'ui'
+  - 'shared'
+  - 'packages/**'
