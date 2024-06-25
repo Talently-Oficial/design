@@ -1,4 +1,6 @@
 <script setup>
+import { twMerge } from 'tailwind-merge'
+
 const props = defineProps({
   required: {
     type: Boolean,
@@ -8,18 +10,29 @@ const props = defineProps({
     type: String,
     default: null,
   },
-  margin: {
-    type: String,
-    default: 'mb-1.5',
-  },
+  ui: {
+    type: Object,
+    default: () => {
+      return {
+        base: '',
+        size: '',
+        margin: '',
+        color: ''
+      }
+    },
+  }
 })
 </script>
 
 <template>
   <label
       :for="props.id"
-      class="inline-block text-sm"
-      :class="[props.margin]"
+      :class="[
+          twMerge('inline-block', props.ui.base),
+          twMerge('mb-1.5', props.ui.margin),
+          twMerge('text-sm', props.ui.size),
+          twMerge('opacity-70', props.ui.color)
+      ]"
   >
     <slot />
     <span

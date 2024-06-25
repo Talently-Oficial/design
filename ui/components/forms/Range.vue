@@ -145,10 +145,10 @@ const onEventInput = (event: string, type: string, value: number) => {
 
     <div
       v-if="isShowInputs"
-      class="flex gap-3 justify-between"
+      class="grid grid-cols-2 gap-3 justify-between"
       :class="inputBoxClass"
     >
-      <div class="w-full max-w-36">
+      <div>
         <ULabel margin="mb-0.5">{{ props.labelMinRange }}</ULabel>
         <UInputNumber
           v-model="model[0]"
@@ -163,7 +163,7 @@ const onEventInput = (event: string, type: string, value: number) => {
         />
       </div>
 
-      <div class="w-full max-w-36">
+      <div>
         <ULabel margin="mb-0.5">{{ props.labelMaxRange }}</ULabel>
         <UInputNumber
           v-model="model[1]"
