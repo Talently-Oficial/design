@@ -31,7 +31,7 @@ const props = defineProps({
           twMerge('inline-block', props.ui.base),
           twMerge('mb-1.5', props.ui.margin),
           twMerge('text-sm', props.ui.size),
-          twMerge('opacity-70', props.ui.color)
+          twMerge('opacity-80', props.ui.color)
       ]"
   >
     <slot />
