@@ -18,7 +18,11 @@ const props = defineProps({
   },
   showInputs: {
     type: Boolean,
-    default: true,
+    default: false,
+  },
+  showLimits: {
+    type: Boolean,
+    default: false,
   },
   data: {
     type: [Array, Object],
@@ -143,13 +147,20 @@ const onEventInput = (event: string, type: string, value: number) => {
       @drag-end="onDragEnd"
     />
 
+    <div v-if="showLimits" class="flex items-center justify-between opacity-70 text-sm -mt-1 mb-3">
+      <span>{{ props.min }}</span>
+      <span>{{ props.max }}</span>
+    </div>
+
     <div
       v-if="isShowInputs"
       class="grid grid-cols-2 gap-3 justify-between"
       :class="inputBoxClass"
     >
       <div>
-        <ULabel margin="mb-0.5">{{ props.labelMinRange }}</ULabel>
+        <slot name="label-min-range">
+          <ULabel>{{ props.labelMinRange }}</ULabel>
+        </slot>
         <UInputNumber
           v-model="model[0]"
           :min="props.min"
@@ -164,7 +175,9 @@ const onEventInput = (event: string, type: string, value: number) => {
       </div>
 
       <div>
-        <ULabel margin="mb-0.5">{{ props.labelMaxRange }}</ULabel>
+        <slot name="label-max-range">
+          <ULabel>{{ props.labelMaxRange }}</ULabel>
+        </slot>
         <UInputNumber
           v-model="model[1]"
           :min="model[0]"
