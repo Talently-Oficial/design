@@ -15,6 +15,8 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['download', 'open'])
+
 const loadingFile = ref(false)
 
 const getExtension = computed(() => {
@@ -33,6 +35,10 @@ const getNameFile = computed(() => {
   return texto.toLowerCase() + '_cv'
 })
 
+const openFile = (type: string) => {
+  emit('open',type)
+}
+
 const downloadFile = () => {
   loadingFile.value = true
 
@@ -48,6 +54,8 @@ const downloadFile = () => {
         link.click()
 
         link.parentNode?.removeChild(link)
+
+        emit('download')
       })
       .catch((error) => {
         console.error('Error downloading file', error)
@@ -71,7 +79,7 @@ const downloadFile = () => {
           <span v-if="props.disabled" class="opacity-50 cursor-not-allowed">
             {{ getNameFile }}.{{ getExtension }}
           </span>
-          <a v-else :href="getURL" target="_blank" class="hover:underline hover:text-primary-500">
+          <a v-else :href="getURL" target="_blank" class="hover:underline hover:text-primary-500" @click="openFile('name')">
             {{ getNameFile }}.{{ getExtension }}
           </a>
         </span>
@@ -85,6 +93,7 @@ const downloadFile = () => {
             target="_blank"
             color="white"
             size="sm"
+            @click="openFile('button')"
         >
           <span class="text-xs font-normal">{{ $t('Abrir') }}</span>
         </UButton>
