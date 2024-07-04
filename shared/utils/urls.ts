@@ -1,3 +1,6 @@
+import type { LocationQuery } from 'vue-router'
+import type { UtmKey, UtmParams } from '~/types/utm'
+
 export const isValidHttpUrl = (url: string) => {
     try {
         const newUrl = new URL(url)
@@ -14,4 +17,15 @@ export const isValidUrl = (url: string) => {
     } catch (err) {
         return false
     }
+}
+
+export const filterUtmFromObject = (query: LocationQuery): UtmParams => {
+    const utmParams: UtmParams = {}
+    const utmKeys: UtmKey[] = ['utm_id', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
+
+    for (const key of utmKeys) {
+        if (query[key]) utmParams[key] = query[key] as string
+    }
+
+    return utmParams
 }
