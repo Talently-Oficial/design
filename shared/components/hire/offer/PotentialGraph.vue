@@ -1,101 +1,138 @@
 <script setup lang="ts">
-const { t: $t } = useI18n()
+const props = defineProps({
+  title: {
+    type: String,
+    default: 'title',
+  },
+  percentage: {
+    type: Number,
+    default: 0,
+  },
+  value: {
+    type: String,
+    default: '',
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+})
 
-const props = defineProps<{ percentage: number; text: string; level: string }>()
+const is25Percentage = computed(() => {
+  if (props.loading) return 'fill-neutral-50'
+  return props.percentage > 0 && props.percentage < 25 ? 'fill-red-400' : 'fill-neutral-50'
+})
+
+const is50Percentage = computed(() => {
+  if (props.loading) return 'fill-neutral-50'
+  return props.percentage >= 25 && props.percentage < 50 ? 'fill-orange-300' : 'fill-neutral-50'
+})
+
+const is75Percentage = computed(() => {
+  if (props.loading) return 'fill-neutral-50'
+  return props.percentage >= 50 && props.percentage < 75 ? 'fill-primary-600' : 'fill-neutral-50'
+})
+
+const is100Percentage = computed(() => {
+  if (props.loading) return 'fill-neutral-50'
+  return props.percentage >= 75 && props.percentage <= 100 ? 'fill-primary-700' : 'fill-neutral-50'
+})
+
+const getProgress = computed(() => {
+  if (props.percentage >= 0 && props.percentage < 25) {
+    return {
+      rotation: 1,
+      stroke: 'stroke-red-400',
+    }
+  }
+
+  if (props.percentage >= 25 && props.percentage < 50) {
+    return {
+      rotation: 73,
+      stroke: 'stroke-orange-300',
+    }
+  }
+
+  if (props.percentage >= 50 && props.percentage < 75) {
+    return {
+      rotation: 145,
+      stroke: 'stroke-primary-600',
+    }
+  }
+
+  if (props.percentage >= 75 && props.percentage <= 100) {
+    return {
+      rotation: 217,
+      stroke: 'stroke-primary-700',
+    }
+  }
+
+  return {
+    rotation: 0,
+    stroke: 'stroke-neutral-50',
+  }
+})
 </script>
 
 <template>
-	<div class="text-center">
-		<div class="relative p-1 2xl:p-2">
-			<svg
-				width="254"
-				height="229"
-				viewBox="0 0 254 229"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-				class="w-full h-auto"
-			>
-				<path
-					d="M65.1008 223.088C61.3023 228.985 53.3954 230.733 47.9076 226.365C31.4165 213.239 18.3964 196.167 10.1052 176.645C1.81399 157.122 -1.42943 135.899 0.57601 114.917C1.24337 107.935 7.99197 103.459 14.8727 104.82V104.82C21.7534 106.181 26.1434 112.868 25.6508 119.865C24.5274 135.822 27.1844 151.882 33.4842 166.716C39.7839 181.549 49.4961 194.614 61.7587 204.886C67.1356 209.389 68.8992 217.192 65.1008 223.088V223.088Z"
-					:class="percentage >= 0 && percentage < 25 && props.level !== 'none' ? 'fill-red-400' : 'fill-neutral-50'"
-				/>
-				<path
-					d="M18.109 92.2546C11.4269 90.1225 7.6801 82.9435 10.4687 76.5076C18.8485 57.1676 31.9408 40.1517 48.6313 27.0633C65.3217 13.9749 84.9685 5.31738 105.749 1.79054C112.664 0.616897 118.742 5.96734 119.22 12.9651V12.9651C119.697 19.9628 114.384 25.9425 107.5 27.2887C91.8014 30.3588 76.9865 37.106 64.305 47.0507C51.6235 56.9953 41.5385 69.7742 34.8138 84.2883C31.8652 90.6525 24.7911 94.3868 18.109 92.2546V92.2546Z"
-					:class="percentage >= 25 && percentage < 50 && props.level !== 'none' ? 'fill-orange-300' : 'fill-neutral-50'"
-				/>
-				<path
-					d="M135.071 12.9853C135.566 5.9888 141.658 0.653881 148.571 1.84516C169.342 5.425 188.966 14.1326 205.623 27.2636C222.281 40.3945 235.329 57.4438 243.66 76.8052C246.432 83.2481 242.667 90.4175 235.979 92.5326V92.5326C229.292 94.6477 222.227 90.8953 219.295 84.5237C212.607 69.9924 202.555 57.1879 189.899 47.2109C177.243 37.2339 162.445 30.4489 146.754 27.3388C139.874 25.9751 134.576 19.9818 135.071 12.9853V12.9853Z"
-					:class="
-						percentage >= 50 && percentage < 75 && props.level !== 'none' ? 'fill-primary-600' : 'fill-neutral-50'
-					"
-				/>
-				<path
-					d="M239.075 104.557C245.953 103.18 252.712 107.64 253.395 114.621C255.45 135.598 252.256 156.829 244.011 176.371C235.765 195.913 222.785 213.015 206.325 226.18C200.847 230.561 192.936 228.831 189.124 222.943V222.943C185.312 217.056 187.057 209.249 192.423 204.733C204.662 194.432 214.344 181.345 220.609 166.497C226.874 151.649 229.493 135.582 228.332 119.627C227.823 112.632 232.198 105.935 239.075 104.557V104.557Z"
-					:class="
-						percentage >= 75 && percentage <= 100 && props.level !== 'none' ? 'fill-primary-700' : 'fill-neutral-50'
-					"
-				/>
-			</svg>
+  <div class="relative">
+    <svg width="699" height="699" viewBox="0 0 699 699" fill="none" xmlns="http://www.w3.org/2000/svg"
+         class="w-full h-auto">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M508.153 602.772C516.525 620.501 508.939 641.659 491.21 650.031C446.894 670.957 398.51 681.858 349.511 681.955C300.512 682.052 252.105 671.342 207.745 650.585C189.987 642.275 182.328 621.143 190.637 603.385C198.947 585.627 220.079 577.967 237.837 586.277C272.728 602.603 310.811 611.032 349.371 610.955C387.93 610.879 426.011 602.3 460.894 585.829C478.623 577.457 499.782 585.043 508.153 602.772Z"
+            fill="none"/>
 
-			<div
-				v-if="percentage >= 0 && percentage < 25 && props.level !== 'none'"
-				class="absolute"
-				style="bottom: 21%; left: 4%"
-			>
-				<div class="circle-style bg-red-400">
-					<div class="bg-white size-3.5 2xl:size-4 rounded-full"></div>
-				</div>
-			</div>
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M158.727 579.961C144.534 593.487 122.063 592.947 108.537 578.753C74.7263 543.275 49.1505 500.782 33.6366 454.304C18.1227 407.826 13.0526 358.508 18.7931 309.869C21.0912 290.398 38.7385 276.477 58.2094 278.775C77.6804 281.073 91.6018 298.72 89.3037 318.191C84.7886 356.447 88.7753 395.248 100.984 431.824C113.193 468.4 133.321 501.845 159.935 529.771C173.461 543.964 172.92 566.435 158.727 579.961Z"
+            :class="is25Percentage"/>
 
-			<div
-				v-if="percentage >= 25 && percentage < 50 && props.level !== 'none'"
-				class="absolute"
-				style="top: 11%; left: 17%"
-			>
-				<div class="circle-style bg-orange-300">
-					<div class="bg-white size-3.5 2xl:size-4 rounded-full"></div>
-				</div>
-			</div>
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M72.4536 235.965C55.3215 226.432 49.1618 204.815 58.6956 187.683C82.5266 144.858 115.503 107.813 155.273 79.1908C195.043 50.5689 240.629 31.0755 288.776 22.1066C308.051 18.5161 326.587 31.2306 330.177 50.5051C333.768 69.7796 321.053 88.3154 301.778 91.9059C263.908 98.9603 228.044 114.295 196.747 136.818C165.45 159.342 139.494 188.499 120.736 222.207C111.203 239.339 89.5856 245.499 72.4536 235.965Z"
+            :class="is50Percentage"/>
 
-			<div
-				v-if="percentage >= 50 && percentage < 75 && props.level !== 'none'"
-				class="absolute"
-				style="top: 11%; right: 17%"
-			>
-				<div class="circle-style bg-primary-600">
-					<div class="bg-white size-3.5 2xl:size-4 rounded-full"></div>
-				</div>
-			</div>
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M369.691 50.9504C373.344 31.6876 391.92 19.033 411.183 22.6856C459.334 31.8159 504.88 51.4463 544.571 80.1776C584.262 108.909 617.121 146.035 640.798 188.907C650.276 206.07 644.047 227.667 626.884 237.145C609.722 246.623 588.125 240.394 578.646 223.231C560.023 189.51 534.174 160.301 502.939 137.691C471.704 115.081 435.857 99.6293 397.956 92.4426C378.693 88.7899 366.038 70.2132 369.691 50.9504Z"
+            :class="is75Percentage"/>
 
-			<div
-				v-if="percentage >= 75 && percentage <= 100 && props.level !== 'none'"
-				class="absolute"
-				style="bottom: 21%; right: 4%"
-			>
-				<div class="circle-style bg-primary-700">
-					<div class="bg-white size-3.5 2xl:size-4 rounded-full"></div>
-				</div>
-			</div>
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M639.534 277.269C658.988 274.835 676.732 288.632 679.166 308.087C685.25 356.716 680.542 406.089 665.375 452.681C650.208 499.274 624.955 541.938 591.415 577.628C577.989 591.915 555.522 592.613 541.235 579.186C526.948 565.76 526.25 543.293 539.677 529.006C566.057 500.935 585.926 467.369 597.862 430.704C609.798 394.038 613.504 355.179 608.715 316.901C606.281 297.447 620.079 279.703 639.534 277.269Z"
+            :class="is100Percentage"/>
+    </svg>
 
-			<div class="absolute inset-0 w-full h-full flex items-center justify-center pt-8">
-				<div class="space-y-1.5 text-center">
-					<div
-						class="uppercase text-xs font-bold text-neutral-500"
-						style="letter-spacing: 0.16rem"
-					>
-						{{ $t('Potencial') }}
-					</div>
-					<div class="font-bold text-6xl">{{ props.level !== 'none' ? percentage : '&nbsp;' }}</div>
-					<div class="text-2.5xl text-neutral-500">{{ text }}</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- Loader -->
+    <svg v-if="loading" width="699" height="699" viewBox="0 0 699 699" fill="none" xmlns="http://www.w3.org/2000/svg"
+         class="w-full h-auto absolute inset-0 animate-spin opacity-20">
+      <path
+          d="M644.767 313.043C650.084 356.118 645.879 399.833 632.449 441.112C619.02 482.39 596.691 520.229 567.035 551.964"
+          stroke="#6621DA" stroke-width="71" stroke-miterlimit="2.3662" stroke-linecap="round"/>
+    </svg>
+
+    <!-- Pointer -->
+    <template v-if="!loading">
+      <svg v-if="props.percentage" width="699" height="699" viewBox="0 0 699 699" fill="none" xmlns="http://www.w3.org/2000/svg"
+           class="w-full h-auto absolute inset-0 circle-style"
+           :style="{ 'transform': `rotate(${getProgress.rotation}deg)`}">
+        <circle cx="68.7845" cy="449.015" r="37" fill="white" :class="getProgress.stroke" stroke-width="30"/>
+      </svg>
+    </template>
+
+    <div class="absolute inset-0 w-full h-full flex items-center justify-center">
+      <div class="space-y-1.5 text-center">
+        <div
+            class="uppercase text-xs font-bold text-neutral-500"
+            style="letter-spacing: 0.16rem"
+        >
+          {{ props.title }}
+        </div>
+        <div class="font-bold text-6xl text-neutral-700">{{ props.percentage ?? '---' }}</div>
+        <div class="text-xl text-neutral-500">{{ props.value ? props.value : '--' }}</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 .circle-style {
-	@apply p-1.5 2xl:p-2.5 rounded-full;
-	box-shadow: 3px 5px 8px -1px #00000067;
+  filter: drop-shadow(0px 0px 5px rgb(0 0 0 / 0.4));
 }
 </style>
