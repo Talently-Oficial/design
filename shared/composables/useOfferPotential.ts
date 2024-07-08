@@ -1,38 +1,57 @@
 export const useOfferPotential = () => {
+    const {$axios} = useNuxtApp()
+
     const loadingOfferPotential = useState<any>('loadingOfferPotential', () => false)
 
     const paramsOfferPotential = useState<any>('paramsOfferPotential', () => ({
-        stack_ids: [
-            1,
-            2,
-            3,
-            4
-        ],
-        seniority_id: 3,
-        english_id: 3,
-        work_modality_id: 1,
-        maximum_salary: 1000,
-        developer_type_id: 3,
+        stack_ids: [],
+        seniority_id: null,
+        english_id: null,
+        work_modality_id: null,
+        maximum_salary: null,
+        developer_type_id: null,
     }))
 
     const resultOfferPotential = useState<any>('resultOfferPotential', () => ({
         popularity: {
-            label: '',
+            label: null,
             value: null,
         },
         affinity: {
-            label: '',
+            label: null,
             value: null,
         },
         potential: {
-            label: '',
+            label: null,
             value: null,
         },
         candidates: null
     }))
 
+
+    const resetResult = () => {
+        resultOfferPotential.value = {
+            popularity: {
+                label: '',
+                value: null,
+            },
+            affinity: {
+                label: '',
+                value: null,
+            },
+            potential: {
+                label: '',
+                value: null,
+            },
+            candidates: null
+        }
+    }
+
     const fetchOfferPotential = async () => {
-        const {$axios} = useNuxtApp()
+        if (paramsOfferPotential.value.stack_ids.length === 0) {
+            resetResult()
+            return
+        }
 
         loadingOfferPotential.value = true
 
