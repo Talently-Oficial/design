@@ -133,6 +133,6 @@ const getProgress = computed(() => {
 
 <style scoped>
 .circle-style {
-  filter: drop-shadow(0px 0px 5px rgb(0 0 0 / 0.4));
+  filter: drop-shadow(0px 0px 2px rgb(0 0 0 / 0.4));
 }
 </style>

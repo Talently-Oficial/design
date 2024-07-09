@@ -4,18 +4,57 @@ const props = defineProps<{
   description: string
   value: null | number
 }>()
+
+const listUser = [
+  'https://d1hazhe1glojgw.cloudfront.net/user-4_1720469756315.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-1_1720469756314.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-3_1720469756315.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-7_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-2_1720469756315.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-5_1720469756315.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-6_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-9_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-8_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-10_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-12_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-11_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-14_1720469756316.png',
+  'https://d1hazhe1glojgw.cloudfront.net/user-13_1720469756316.png',
+]
+
+const users = ref([])
+
+const setListUser = () => {
+  const count = Number(props.value) > 6 ? 6 : Number(props.value)
+  users.value = []
+
+  for (let i = 0; i < count; i++) {
+    const randomIndex = Math.floor(Math.random() * listUser.length)
+    const user = listUser[randomIndex]
+
+    if (!users.value.includes(user)) {
+      users.value.push(user)
+    } else {
+      i--
+    }
+  }
+}
+
+watch(() => props.value, () => {
+  setListUser()
+})
+
+onMounted(() => {
+  setListUser()
+})
 </script>
 
 <template>
   <UCard :ui="{ background: 'bg-neutral-700', base: 'text-white text-center' }">
     <div class="flex flex-col gap-3 py-2">
-      <div class="hidden">
+      <div>
         <UAvatarGroup size="xs">
-          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
-          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
-          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
-          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
-          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
+          <UAvatar v-for="(user, i) in users" :src="user" :key="i"/>
         </UAvatarGroup>
       </div>
 
