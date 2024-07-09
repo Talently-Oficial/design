@@ -106,12 +106,7 @@ export const useOfferPotential = () => {
             params.developer_type_id = 3
         }
 
-        // $axios.post('/v4/web/offer/calculate-salary', params)
-        $axios.post('/v4/hire/offers/calculate-minimum-salary', params, {
-            headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdGVzdC1hZG1pbi50YWxlbnRseS50ZWNoL2FwaS92My9wYXJ0bmVyc2hpcC9idXNpbmVzc2VzIiwiaWF0IjoxNzIwMjE5NDA4LCJleHAiOjE3MjI4NDc0MDgsIm5iZiI6MTcyMDIxOTQwOCwianRpIjoiZ1JUNzQxMGJSeERjQjZDViIsInN1YiI6MzgyMSwicHJ2IjoiZDEwZWZmZDRjYzU1ZDQwOWU3Y2ZhMTE4NmQ5ZDllNjcwMWQ3YmE0NiJ9.4Yy-WuLYBOM5B2CH1zMol7K_pRSYyXHbcCeMoRG3ER4'
-            }
-        })
+        $axios.post('/v4/web/offer/calculate-salary', params)
             .then(({data}) => {
                 resultCalculateSalary.value = data.result
             })

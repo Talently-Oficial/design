@@ -50,31 +50,33 @@ onMounted(() => {
 </script>
 
 <template>
-  <UCard :ui="{ background: 'bg-neutral-700', base: 'text-white text-center' }">
-    <div class="flex flex-col gap-3 py-2">
-      <div>
-        <UAvatarGroup size="xs">
-          <UAvatar v-for="(user, i) in users" :src="user" :key="i"/>
-        </UAvatarGroup>
+  <div class="rounded-2xl border lg:border-none lg:bg-neutral-700 lg:text-white lg:text-center">
+    <div class="flex flex-col gap-2 lg:gap-3 p-4 lg:p-8">
+      <div class="flex gap-2 lg:gap-3 items-center justify-end flex-row-reverse lg:flex-col">
+        <div class="scale-80 lg:scale-100">
+          <UAvatarGroup size="xs">
+            <UAvatar v-for="(user, i) in users" :src="user" :key="i"/>
+          </UAvatarGroup>
+        </div>
+
+        <span class="text-3xl lg:text-4.6xl font-bold leading-none text-neutral-700 lg:text-white">
+          <template v-if="props.value">
+            {{ props.value }}
+          </template>
+          <template v-else>
+            ----
+          </template>
+        </span>
       </div>
 
-      <span class="text-4.6xl font-bold">
-        <template v-if="props.value">
-          {{ props.value }}
-        </template>
-        <template v-else>
-          ----
-        </template>
-      </span>
-
       <div>
-        <h3 class="font-medium text-lg mb-3">{{ props.title }}</h3>
+        <h3 class="font-medium text-lg text-neutral-700 lg:text-white mb-1 lg:mb-2">{{ props.title }}</h3>
         <p class="text-sm opacity-80">
           {{ props.description }}
         </p>
       </div>
     </div>
-  </UCard>
+  </div>
 </template>
 
 <style scoped>
