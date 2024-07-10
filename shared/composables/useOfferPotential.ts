@@ -71,8 +71,7 @@ export const useOfferPotential = () => {
             developer_type_id: paramsOfferPotential.value.developer_type_id
         }
 
-        // $axios.get('/v4/web/offer/evaluator', { params })
-        $axios.get('/v4/web/evaluator', {params})
+        $axios.get('/v4/web/offer/evaluator', {params})
             .then(({data}) => {
                 resultOfferPotential.value = data.result
             })
