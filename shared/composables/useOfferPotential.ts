@@ -83,6 +83,45 @@ export const useOfferPotential = () => {
             })
     }
 
+    const getDeveloperType = (skillsId: number[]) => {
+        // ID skill developer type
+        const front = [1, 7, 18, 260, 262, 455]
+        const backend = [2, 3, 4, 5, 6, 10, 11, 13, 29, 31, 36, 37, 51, 266, 325, 570, 741]
+        const mobile = [14, 85, 86, 89, 138, 707, 708]
+        const devops = [66, 67, 68, 69, 219, 269]
+        const data = [12, 60, 109, 146, 163, 230, 231, 232, 265, 299, 312, 431, 447, 478, 500, 528, 583, 742, 883]
+        const qa = [235]
+
+        // ID developer types
+        const FRONTEND = 1
+        const BACKEND = 2
+        const FULLSTACK = 3
+        const MOBILE = 4
+        const DEVOPS = 5
+        const DATA = 7
+        const QA = 33
+
+        let profile = FULLSTACK
+
+        if (skillsId.some(id => front.includes(id)) && skillsId.some(id => backend.includes(id))) {
+            profile = FULLSTACK
+        } else if (skillsId.some(id => front.includes(id))) {
+            profile = FRONTEND
+        } else if (skillsId.some(id => backend.includes(id))) {
+            profile = BACKEND
+        } else if (skillsId.some(id => mobile.includes(id))) {
+            profile = MOBILE
+        } else if (skillsId.some(id => devops.includes(id))) {
+            profile = DEVOPS
+        } else if (skillsId.some(id => data.includes(id))) {
+            profile = DATA
+        } else if (skillsId.some(id => qa.includes(id))) {
+            profile = QA
+        }
+
+        return profile
+    }
+
     const fetchCalculateSalary = async () => {
         if (paramsOfferPotential.value.stack_ids.length === 0) {
             resetResultCalculateSalary()
@@ -101,8 +140,12 @@ export const useOfferPotential = () => {
             developer_type_id: paramsOfferPotential.value.developer_type_id
         }
 
-        if(params.developer_type_id === null) {
-            params.developer_type_id = 3
+        if (params.work_modality_id !== ID_WORK_MODALITY_REMOTE_GLOBAL) {
+            params.work_modality_id = ID_WORK_MODALITY_REMOTE_GLOBAL
+        }
+
+        if (params.developer_type_id === null) {
+            params.developer_type_id = getDeveloperType(params.skills_id)
         }
 
         $axios.post('/v4/web/offer/calculate-salary', params)
