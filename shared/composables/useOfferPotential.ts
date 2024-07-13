@@ -1,4 +1,16 @@
+import { AxiosInstance } from 'axios'
+
 import { getYearsExperienceFromSeniority } from '~/utils/offer'
+
+interface OfferPotentialParams {
+    stack_ids: (number | null)[]
+    seniority_id: number | null
+    english_id: number | null
+    work_modality_id: number | null
+    minimum_salary: number | null
+    maximum_salary: number | null
+    developer_type_id: number | null
+}
 
 const templateResultOfferPotential = {
     popularity: {
@@ -31,7 +43,7 @@ export const useOfferPotential = () => {
     const loadingCalculateSalary = useState<boolean>('loadingCalculateSalary', () => false)
     const resultCalculateSalary = useState<any>('resultCalculateSalary', () => ({...templateResultCalculateSalary}))
 
-    const paramsOfferPotential = useState<any>('paramsOfferPotential', () => ({
+    const paramsOfferPotential = useState<OfferPotentialParams>('paramsOfferPotential', () => ({
         stack_ids: [],
         seniority_id: null,
         english_id: null,
@@ -134,7 +146,7 @@ export const useOfferPotential = () => {
         resultOfferPotential.value.suggestions = suggestions
     }
 
-    const getDeveloperType = (skillsId: number[]) => {
+    const getDeveloperType = (skillsId: number[]): number => {
         // ID skill developer type
         const front = [1, 7, 18, 260, 262, 455]
         const backend = [2, 3, 4, 5, 6, 10, 11, 13, 29, 31, 36, 37, 51, 266, 325, 570, 741]
@@ -183,7 +195,7 @@ export const useOfferPotential = () => {
         )
     }
 
-    const fetchOfferPotential = async ($fetch, path= '/v4/web/offer/evaluator') => {
+    const fetchOfferPotential = async ($fetch: AxiosInstance, path: string= '/v4/web/offer/evaluator'): Promise<void> => {
         if (!isValidParams()) {
             resetResultOfferPotential()
             loadingOfferPotential.value = false
@@ -205,7 +217,7 @@ export const useOfferPotential = () => {
         //     params.developer_type_id = getDeveloperType(params.stack_ids)
         // }
 
-        $fetch.get('/v4/web/offer/evaluator', {params})
+        $fetch.get(path, {params})
             .then(({data}) => {
                 resultOfferPotential.value = data.result
             })
@@ -217,7 +229,7 @@ export const useOfferPotential = () => {
             })
     }
 
-    const fetchCalculateSalary = async ($fetch, path= '/v4/web/offer/calculate-salary') => {
+    const fetchCalculateSalary = async ($fetch: AxiosInstance, path: string = '/v4/web/offer/calculate-salary'): Promise<void> => {
         if (!isValidParams()) {
             resetResultCalculateSalary()
             loadingOfferPotential.value = false
