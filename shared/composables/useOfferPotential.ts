@@ -1,8 +1,4 @@
-const salaryEquivalenceSeniority = {
-    1: 2,
-    2: 4,
-    3: 6,
-}
+import { getYearsExperienceFromSeniority } from '~/utils/offer'
 
 const templateResultOfferPotential = {
     popularity: {
@@ -28,8 +24,6 @@ const templateResultCalculateSalary = {
 }
 
 export const useOfferPotential = () => {
-    const {$axios} = useNuxtApp()
-
     const loadingOfferPotential = useState<boolean>('loadingOfferPotential', () => false)
     const resultOfferPotential = useState<any>('resultOfferPotential', () => ({...templateResultOfferPotential}))
 
@@ -38,7 +32,7 @@ export const useOfferPotential = () => {
 
     const paramsOfferPotential = useState<any>('paramsOfferPotential', () => ({
         stack_ids: [],
-        seniority_id: 3,
+        seniority_id: null,
         english_id: null,
         work_modality_id: null,
         minimum_salary: null,
@@ -52,35 +46,6 @@ export const useOfferPotential = () => {
 
     const resetResultCalculateSalary = () => {
         resultCalculateSalary.value = templateResultCalculateSalary
-    }
-
-    const fetchOfferPotential = async () => {
-        if (paramsOfferPotential.value.stack_ids.length === 0) {
-            resetResultOfferPotential()
-            return
-        }
-
-        loadingOfferPotential.value = true
-
-        const params = {
-            stack_ids: paramsOfferPotential.value.stack_ids,
-            english_id: paramsOfferPotential.value.english_id,
-            seniority_id: paramsOfferPotential.value.seniority_id,
-            work_modality_id: paramsOfferPotential.value.work_modality_id,
-            maximum_salary: paramsOfferPotential.value.maximum_salary,
-            developer_type_id: paramsOfferPotential.value.developer_type_id
-        }
-
-        $axios.get('/v4/web/offer/evaluator', {params})
-            .then(({data}) => {
-                resultOfferPotential.value = data.result
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-            .finally(() => {
-                loadingOfferPotential.value = false
-            })
     }
 
     const getDeveloperType = (skillsId: number[]) => {
@@ -122,9 +87,49 @@ export const useOfferPotential = () => {
         return profile
     }
 
-    const fetchCalculateSalary = async () => {
-        if (paramsOfferPotential.value.stack_ids.length === 0) {
+    const isValidParams = () => {
+        return (
+            paramsOfferPotential.value.stack_ids.filter((val) => val !== null).length > 0 &&
+            paramsOfferPotential.value.seniority_id &&
+            paramsOfferPotential.value.english_id &&
+            paramsOfferPotential.value.work_modality_id &&
+            paramsOfferPotential.value.maximum_salary
+        )
+    }
+
+    const fetchOfferPotential = async ($fetch, path= '/v4/web/offer/evaluator') => {
+        if (!isValidParams()) {
+            resetResultOfferPotential()
+            loadingOfferPotential.value = false
+            return
+        }
+
+        loadingOfferPotential.value = true
+
+        const params = {
+            stack_ids: paramsOfferPotential.value.stack_ids,
+            english_id: paramsOfferPotential.value.english_id,
+            seniority_id: paramsOfferPotential.value.seniority_id,
+            work_modality_id: paramsOfferPotential.value.work_modality_id,
+            maximum_salary: paramsOfferPotential.value.maximum_salary,
+        }
+
+        $fetch.get('/v4/web/offer/evaluator', {params})
+            .then(({data}) => {
+                resultOfferPotential.value = data.result
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+            .finally(() => {
+                loadingOfferPotential.value = false
+            })
+    }
+
+    const fetchCalculateSalary = async ($fetch, path= '/v4/web/offer/calculate-salary') => {
+        if (!isValidParams()) {
             resetResultCalculateSalary()
+            loadingOfferPotential.value = false
             return
         }
 
@@ -132,7 +137,7 @@ export const useOfferPotential = () => {
 
         const params = {
             skills_id: paramsOfferPotential.value.stack_ids,
-            years_experience: salaryEquivalenceSeniority[paramsOfferPotential.value.seniority_id],
+            years_experience: getYearsExperienceFromSeniority(paramsOfferPotential.value.seniority_id),
             english_level: paramsOfferPotential.value.english_id,
             work_modality_id: paramsOfferPotential.value.work_modality_id,
             minimum_salary: paramsOfferPotential.value.minimum_salary,
@@ -148,7 +153,7 @@ export const useOfferPotential = () => {
             params.developer_type_id = getDeveloperType(params.skills_id)
         }
 
-        $axios.post('/v4/web/offer/calculate-salary', params)
+        $fetch.post(path, params)
             .then(({data}) => {
                 resultCalculateSalary.value = data.result
             })
@@ -166,6 +171,8 @@ export const useOfferPotential = () => {
         resultOfferPotential,
         resultCalculateSalary,
         paramsOfferPotential,
+        resetResultOfferPotential,
+        resetResultCalculateSalary,
         fetchOfferPotential,
         fetchCalculateSalary
     }
