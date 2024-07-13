@@ -13,6 +13,7 @@ const templateResultOfferPotential = {
         label: null,
         value: null,
     },
+    suggestions: [],
     candidates: null
 }
 
@@ -46,6 +47,91 @@ export const useOfferPotential = () => {
 
     const resetResultCalculateSalary = () => {
         resultCalculateSalary.value = templateResultCalculateSalary
+    }
+
+    const fieldSuggestion = (form) => {
+        const suggestions = []
+
+        const { affinity, potential, target } = resultOfferPotential.value
+        const skills = form.stacks
+        const { low, score } = resultCalculateSalary.value
+        const selectedMinSalary = form.salary_min
+        const selectedYearExperience = form.min_years_experience
+        const selectedLanguageProficiency = form.language_proficiency_id
+        const averageYearsExperience = 5
+
+        if (potential.quantity === 100) {
+            return
+        }
+
+        const checkLowAndMiddlePotentialScore = () => {
+            return potential.quantity < 60
+        }
+
+        const checkSkillAndLowSalary = () => {
+            const required = skills.filter((val) => {
+                return !!val.is_required
+            })
+
+            return skills.length >= 6 && required.length > 3 && score === 'low'
+        }
+
+        const checkYearsOfExperience = () => {
+            return (
+                selectedYearExperience > averageYearsExperience && (potential.level === 'low' || potential.level === 'middle')
+            )
+        }
+
+        const checkEnglishLevelAndSalary = () => {
+            return selectedLanguageProficiency >= ID_INTERMEDIATE_ENGLISH_LEVEL && score === 'low'
+        }
+
+        const checkLowAffinity = () => {
+            return affinity.level <= 2
+        }
+
+        const checkLowTarget = () => {
+            return target.quantity < 20
+        }
+
+        const checkLowSalary = () => {
+            return selectedMinSalary < low
+        }
+
+        if (checkLowAndMiddlePotentialScore()) {
+            suggestions.push(LOW_AND_MIDDLE_POTENTIAL_SCORE)
+        }
+
+        if (checkSkillAndLowSalary()) {
+            suggestions.push(SKILL_AND_LOW_SALARY)
+        }
+
+        if (checkYearsOfExperience()) {
+            suggestions.push(HIGH_YEARS_OF_EXPERIENCE)
+        }
+
+        if (checkEnglishLevelAndSalary()) {
+            suggestions.push(ENGLISH_LEVEL_AND_SALARY)
+        }
+
+        if (checkLowAffinity()) {
+            suggestions.push(AVERAGE_AFFINITY_LOG)
+        }
+
+        if (checkLowTarget()) {
+            suggestions.push(LOW_TARGET)
+        }
+
+        if (checkLowSalary()) {
+            const roleIndex = form.developer_types.findIndex(
+                (val) => val.id === form.developer_type_id,
+            )
+            if (roleIndex !== -1)
+                suggestions.push(LOW_SALARY.replace('[rol]', form.developer_types[roleIndex].name))
+        }
+
+        resultOfferPotential.value.suggestions.splice(0, resultOfferPotential.value.suggestions.length)
+        resultOfferPotential.value.suggestions = suggestions
     }
 
     const getDeveloperType = (skillsId: number[]) => {
@@ -112,7 +198,12 @@ export const useOfferPotential = () => {
             seniority_id: paramsOfferPotential.value.seniority_id,
             work_modality_id: paramsOfferPotential.value.work_modality_id,
             maximum_salary: paramsOfferPotential.value.maximum_salary,
+            // developer_type_id: paramsOfferPotential.value.developer_type_id
         }
+
+        // if (params.developer_type_id === null) {
+        //     params.developer_type_id = getDeveloperType(params.stack_ids)
+        // }
 
         $fetch.get('/v4/web/offer/evaluator', {params})
             .then(({data}) => {
