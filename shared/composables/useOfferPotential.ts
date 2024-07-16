@@ -1,15 +1,14 @@
 import { AxiosInstance } from 'axios'
 
-import { getYearsExperienceFromSeniority } from '~/utils/offer'
-
 interface OfferPotentialParams {
-    stack_ids: (number | null)[]
+    skill_ids: (number | null)[]
     seniority_id: number | null
-    english_id: number | null
-    work_modality_id: number | null
+    years_experience: number | null
+    english_level_id: number | null
     minimum_salary: number | null
     maximum_salary: number | null
-    developer_type_id: number | null
+    work_modality_id: number | null // Optional
+    developer_type_id: number | null // Optional
 }
 
 const templateResultOfferPotential = {
@@ -25,7 +24,6 @@ const templateResultOfferPotential = {
         label: null,
         value: null,
     },
-    suggestions: [],
     candidates: null
 }
 
@@ -44,9 +42,10 @@ export const useOfferPotential = () => {
     const resultCalculateSalary = useState<any>('resultCalculateSalary', () => ({...templateResultCalculateSalary}))
 
     const paramsOfferPotential = useState<OfferPotentialParams>('paramsOfferPotential', () => ({
-        stack_ids: [],
+        skill_ids: [],
         seniority_id: null,
-        english_id: null,
+        years_experience: null,
+        english_level_id: null,
         work_modality_id: null,
         minimum_salary: null,
         maximum_salary: null,
@@ -146,57 +145,27 @@ export const useOfferPotential = () => {
         resultOfferPotential.value.suggestions = suggestions
     }
 
-    const getDeveloperType = (skillsId: number[]): number => {
-        // ID skill developer type
-        const front = [1, 7, 18, 260, 262, 455]
-        const backend = [2, 3, 4, 5, 6, 10, 11, 13, 29, 31, 36, 37, 51, 266, 325, 570, 741]
-        const mobile = [14, 85, 86, 89, 138, 707, 708]
-        const devops = [66, 67, 68, 69, 219, 269]
-        const data = [12, 60, 109, 146, 163, 230, 231, 232, 265, 299, 312, 431, 447, 478, 500, 528, 583, 742, 883]
-        const qa = [235]
-
-        // ID developer types
-        const FRONTEND = 1
-        const BACKEND = 2
-        const FULLSTACK = 3
-        const MOBILE = 4
-        const DEVOPS = 5
-        const DATA = 7
-        const QA = 33
-
-        let profile = FULLSTACK
-
-        if (skillsId.some(id => front.includes(id)) && skillsId.some(id => backend.includes(id))) {
-            profile = FULLSTACK
-        } else if (skillsId.some(id => front.includes(id))) {
-            profile = FRONTEND
-        } else if (skillsId.some(id => backend.includes(id))) {
-            profile = BACKEND
-        } else if (skillsId.some(id => mobile.includes(id))) {
-            profile = MOBILE
-        } else if (skillsId.some(id => devops.includes(id))) {
-            profile = DEVOPS
-        } else if (skillsId.some(id => data.includes(id))) {
-            profile = DATA
-        } else if (skillsId.some(id => qa.includes(id))) {
-            profile = QA
-        }
-
-        return profile
+    const isValidParamsOfferPotential = () => {
+        return (
+            paramsOfferPotential.value.skill_ids.filter((val) => val !== null).length > 0 &&
+            paramsOfferPotential.value.english_level_id &&
+            paramsOfferPotential.value.seniority_id &&
+            paramsOfferPotential.value.maximum_salary
+        )
     }
 
-    const isValidParams = () => {
+    const isValidParamsCalculateSalary = () => {
         return (
-            paramsOfferPotential.value.stack_ids.filter((val) => val !== null).length > 0 &&
-            paramsOfferPotential.value.seniority_id &&
-            paramsOfferPotential.value.english_id &&
-            paramsOfferPotential.value.work_modality_id &&
+            paramsOfferPotential.value.skill_ids.filter((val) => val !== null).length > 0 &&
+            paramsOfferPotential.value.years_experience &&
+            paramsOfferPotential.value.english_level_id &&
+            paramsOfferPotential.value.minimum_salary &&
             paramsOfferPotential.value.maximum_salary
         )
     }
 
     const fetchOfferPotential = async ($fetch: AxiosInstance, path: string= '/v4/web/offer/evaluator'): Promise<void> => {
-        if (!isValidParams()) {
+        if (!isValidParamsOfferPotential()) {
             resetResultOfferPotential()
             loadingOfferPotential.value = false
             return
@@ -205,17 +174,12 @@ export const useOfferPotential = () => {
         loadingOfferPotential.value = true
 
         const params = {
-            stack_ids: paramsOfferPotential.value.stack_ids,
-            english_id: paramsOfferPotential.value.english_id,
+            skill_ids: paramsOfferPotential.value.skill_ids,
+            english_level_id: paramsOfferPotential.value.english_level_id,
             seniority_id: paramsOfferPotential.value.seniority_id,
             work_modality_id: paramsOfferPotential.value.work_modality_id,
             maximum_salary: paramsOfferPotential.value.maximum_salary,
-            // developer_type_id: paramsOfferPotential.value.developer_type_id
         }
-
-        // if (params.developer_type_id === null) {
-        //     params.developer_type_id = getDeveloperType(params.stack_ids)
-        // }
 
         $fetch.get(path, {params})
             .then(({data}) => {
@@ -230,7 +194,7 @@ export const useOfferPotential = () => {
     }
 
     const fetchCalculateSalary = async ($fetch: AxiosInstance, path: string = '/v4/web/offer/calculate-salary'): Promise<void> => {
-        if (!isValidParams()) {
+        if (!isValidParamsCalculateSalary()) {
             resetResultCalculateSalary()
             loadingOfferPotential.value = false
             return
@@ -239,21 +203,13 @@ export const useOfferPotential = () => {
         loadingCalculateSalary.value = true
 
         const params = {
-            skills_id: paramsOfferPotential.value.stack_ids,
-            years_experience: getYearsExperienceFromSeniority(paramsOfferPotential.value.seniority_id),
-            english_level: paramsOfferPotential.value.english_id,
-            work_modality_id: paramsOfferPotential.value.work_modality_id,
+            skill_ids: paramsOfferPotential.value.skill_ids,
+            years_experience: paramsOfferPotential.value.years_experience,
+            english_level_id: paramsOfferPotential.value.english_level_id,
             minimum_salary: paramsOfferPotential.value.minimum_salary,
             maximum_salary: paramsOfferPotential.value.maximum_salary,
+            work_modality_id: paramsOfferPotential.value.work_modality_id,
             developer_type_id: paramsOfferPotential.value.developer_type_id
-        }
-
-        if (params.work_modality_id !== ID_WORK_MODALITY_REMOTE_GLOBAL) {
-            params.work_modality_id = ID_WORK_MODALITY_REMOTE_GLOBAL
-        }
-
-        if (params.developer_type_id === null) {
-            params.developer_type_id = getDeveloperType(params.skills_id)
         }
 
         $fetch.post(path, params)
