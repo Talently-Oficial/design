@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios'
+import {AxiosInstance} from 'axios'
 
 interface OfferPotentialParams {
     skill_ids: (number | null)[]
@@ -39,6 +39,8 @@ export const useOfferPotential = () => {
     const resultOfferPotential = useState<any>('resultOfferPotential', () => ({...templateResultOfferPotential}))
 
     const loadingCalculateSalary = useState<boolean>('loadingCalculateSalary', () => false)
+    const resultOfferSuggestion = useState<any>('resultSuggestion', () => [])
+
     const resultCalculateSalary = useState<any>('resultCalculateSalary', () => ({...templateResultCalculateSalary}))
 
     const paramsOfferPotential = useState<OfferPotentialParams>('paramsOfferPotential', () => ({
@@ -60,23 +62,43 @@ export const useOfferPotential = () => {
         resultCalculateSalary.value = templateResultCalculateSalary
     }
 
-    const fieldSuggestion = (form) => {
+    const isValidParamsOfferPotential = () => {
+        return (
+            paramsOfferPotential.value.skill_ids.filter((val) => val !== null).length > 0 &&
+            paramsOfferPotential.value.english_level_id &&
+            paramsOfferPotential.value.seniority_id &&
+            paramsOfferPotential.value.maximum_salary
+        )
+    }
+
+    const isValidParamsCalculateSalary = () => {
+        return (
+            paramsOfferPotential.value.skill_ids.filter((val) => val !== null).length > 0 &&
+            paramsOfferPotential.value.years_experience &&
+            paramsOfferPotential.value.english_level_id &&
+            paramsOfferPotential.value.minimum_salary &&
+            paramsOfferPotential.value.maximum_salary
+        )
+    }
+
+    const setSuggestions = (form) => {
+        if(!isValidParamsOfferPotential() && !isValidParamsCalculateSalary()) return
+
         const suggestions = []
 
-        const { affinity, potential, target } = resultOfferPotential.value
+        const {affinity, potential, popularity} = resultOfferPotential.value
+        const {low, score} = resultCalculateSalary.value
+
         const skills = form.stacks
-        const { low, score } = resultCalculateSalary.value
         const selectedMinSalary = form.salary_min
         const selectedYearExperience = form.min_years_experience
         const selectedLanguageProficiency = form.language_proficiency_id
         const averageYearsExperience = 5
 
-        if (potential.quantity === 100) {
-            return
-        }
+        if (potential.value === 100) return
 
         const checkLowAndMiddlePotentialScore = () => {
-            return potential.quantity < 60
+            return potential.value < 60
         }
 
         const checkSkillAndLowSalary = () => {
@@ -89,7 +111,7 @@ export const useOfferPotential = () => {
 
         const checkYearsOfExperience = () => {
             return (
-                selectedYearExperience > averageYearsExperience && (potential.level === 'low' || potential.level === 'middle')
+                selectedYearExperience > averageYearsExperience && (potential.label === 'Low' || potential.label === 'Middle' || potential.label === 'Bajo' || potential.label === 'Medio')
             )
         }
 
@@ -98,11 +120,11 @@ export const useOfferPotential = () => {
         }
 
         const checkLowAffinity = () => {
-            return affinity.level <= 2
+            return affinity.value <= 2
         }
 
         const checkLowTarget = () => {
-            return target.quantity < 20
+            return popularity.value < 1
         }
 
         const checkLowSalary = () => {
@@ -141,30 +163,10 @@ export const useOfferPotential = () => {
                 suggestions.push(LOW_SALARY.replace('[rol]', form.developer_types[roleIndex].name))
         }
 
-        resultOfferPotential.value.suggestions.splice(0, resultOfferPotential.value.suggestions.length)
-        resultOfferPotential.value.suggestions = suggestions
+        resultOfferSuggestion.value = suggestions
     }
 
-    const isValidParamsOfferPotential = () => {
-        return (
-            paramsOfferPotential.value.skill_ids.filter((val) => val !== null).length > 0 &&
-            paramsOfferPotential.value.english_level_id &&
-            paramsOfferPotential.value.seniority_id &&
-            paramsOfferPotential.value.maximum_salary
-        )
-    }
-
-    const isValidParamsCalculateSalary = () => {
-        return (
-            paramsOfferPotential.value.skill_ids.filter((val) => val !== null).length > 0 &&
-            paramsOfferPotential.value.years_experience &&
-            paramsOfferPotential.value.english_level_id &&
-            paramsOfferPotential.value.minimum_salary &&
-            paramsOfferPotential.value.maximum_salary
-        )
-    }
-
-    const fetchOfferPotential = async ($fetch: AxiosInstance, path: string= '/v4/web/offer/evaluator'): Promise<void> => {
+    const fetchOfferPotential = async ($fetch: AxiosInstance, path: string = '/v4/web/offer/evaluator'): Promise<void> => {
         if (!isValidParamsOfferPotential()) {
             resetResultOfferPotential()
             loadingOfferPotential.value = false
@@ -196,7 +198,7 @@ export const useOfferPotential = () => {
     const fetchCalculateSalary = async ($fetch: AxiosInstance, path: string = '/v4/web/offer/calculate-salary'): Promise<void> => {
         if (!isValidParamsCalculateSalary()) {
             resetResultCalculateSalary()
-            loadingOfferPotential.value = false
+            loadingCalculateSalary.value = false
             return
         }
 
@@ -229,7 +231,9 @@ export const useOfferPotential = () => {
         loadingCalculateSalary,
         resultOfferPotential,
         resultCalculateSalary,
+        resultOfferSuggestion,
         paramsOfferPotential,
+        setSuggestions,
         resetResultOfferPotential,
         resetResultCalculateSalary,
         fetchOfferPotential,
