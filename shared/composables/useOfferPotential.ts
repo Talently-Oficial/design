@@ -39,9 +39,9 @@ export const useOfferPotential = () => {
     const resultOfferPotential = useState<any>('resultOfferPotential', () => ({...templateResultOfferPotential}))
 
     const loadingCalculateSalary = useState<boolean>('loadingCalculateSalary', () => false)
-    const resultOfferSuggestion = useState<any>('resultSuggestion', () => [])
-
     const resultCalculateSalary = useState<any>('resultCalculateSalary', () => ({...templateResultCalculateSalary}))
+
+    const resultOfferSuggestions = useState<any>('resultOfferSuggestions', () => [])
 
     const paramsOfferPotential = useState<OfferPotentialParams>('paramsOfferPotential', () => ({
         skill_ids: [],
@@ -62,12 +62,16 @@ export const useOfferPotential = () => {
         resultCalculateSalary.value = templateResultCalculateSalary
     }
 
+    const resetResultOfferSuggestions = () => {
+        resultOfferSuggestions.value = []
+    }
+
     const isValidParamsOfferPotential = () => {
         return (
             paramsOfferPotential.value.skill_ids.filter((val) => val !== null).length > 0 &&
             paramsOfferPotential.value.english_level_id &&
-            paramsOfferPotential.value.seniority_id &&
-            paramsOfferPotential.value.maximum_salary
+            paramsOfferPotential.value.maximum_salary &&
+            (paramsOfferPotential.value.seniority_id || paramsOfferPotential.value.years_experience)
         )
     }
 
@@ -82,7 +86,7 @@ export const useOfferPotential = () => {
     }
 
     const setSuggestions = (form) => {
-        if(!isValidParamsOfferPotential() && !isValidParamsCalculateSalary()) return
+        if (!isValidParamsOfferPotential() && !isValidParamsCalculateSalary()) return
 
         const suggestions = []
 
@@ -163,7 +167,7 @@ export const useOfferPotential = () => {
                 suggestions.push(LOW_SALARY.replace('[rol]', form.developer_types[roleIndex].name))
         }
 
-        resultOfferSuggestion.value = suggestions
+        resultOfferSuggestions.value = suggestions
     }
 
     const fetchOfferPotential = async ($fetch: AxiosInstance, path: string = '/v4/web/offer/evaluator'): Promise<void> => {
@@ -178,12 +182,13 @@ export const useOfferPotential = () => {
         const params = {
             skill_ids: paramsOfferPotential.value.skill_ids,
             english_level_id: paramsOfferPotential.value.english_level_id,
+            years_experience: paramsOfferPotential.value.years_experience,
             seniority_id: paramsOfferPotential.value.seniority_id,
             work_modality_id: paramsOfferPotential.value.work_modality_id,
             maximum_salary: paramsOfferPotential.value.maximum_salary,
         }
 
-        $fetch.get(path, {params})
+        await $fetch.post(path, params)
             .then(({data}) => {
                 resultOfferPotential.value = data.result
             })
@@ -214,7 +219,7 @@ export const useOfferPotential = () => {
             developer_type_id: paramsOfferPotential.value.developer_type_id
         }
 
-        $fetch.post(path, params)
+        await $fetch.post(path, params)
             .then(({data}) => {
                 resultCalculateSalary.value = data.result
             })
@@ -231,11 +236,12 @@ export const useOfferPotential = () => {
         loadingCalculateSalary,
         resultOfferPotential,
         resultCalculateSalary,
-        resultOfferSuggestion,
+        resultOfferSuggestions,
         paramsOfferPotential,
         setSuggestions,
         resetResultOfferPotential,
         resetResultCalculateSalary,
+        resetResultOfferSuggestions,
         fetchOfferPotential,
         fetchCalculateSalary
     }
