@@ -3,6 +3,7 @@ import { VueTelInput } from 'vue-tel-input'
 import 'vue-tel-input/vue-tel-input.css'
 
 const model = defineModel()
+const phone = defineModel('phone')
 const country = defineModel('country')
 
 const props = defineProps({
@@ -42,7 +43,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['validate', 'blur'])
+const emit = defineEmits(['validate', 'blur', 'country-changed'])
 
 const dropdownOptions = ref({
   showFlags: true,
@@ -56,42 +57,46 @@ const inputOptions = ref({
   required: true,
   autocomplete: props.autocomplete,
 })
-const showErrors = ref(false)
-const errors = ref({
-  phone: '',
-  country_code: '',
+const phoneObjectLocal = ref({})
+const countryDataLocal = ref({})
+
+const getMergedPhoneObject = computed(() => {
+  return {
+    ...phoneObjectLocal.value,
+    ...countryDataLocal.value,
+  }
 })
 
-const countryChanged = (data) => {
-  if (!data.dialCode) return
-  country.value = Number(data.dialCode)
+const countryChanged = (countryObject) => {
+  countryDataLocal.value = countryObject
+
+  if (!countryObject.dialCode) return
+
+  country.value = countryObject.dialCode
+
+  emit('country-changed', getMergedPhoneObject.value)
 }
 
-const phoneInput = () => {
-  let phone =  model.value.replace(/ /g, '')
-  const prefix = `+${country.value}`
+const phoneInput = (_, phoneObject) => {
+  phoneObjectLocal.value = phoneObject
 
-  if (phone.includes(prefix)) {
-    phone = phone.substring(prefix.length)
-  }
-
-  model.value = phone
+  if (!phoneObject.nationalNumber) return
+  phone.value =phoneObject.nationalNumber
 }
 
 const phoneValidate = (phoneObject) => {
   emit('validate', phoneObject?.valid || false)
-
-  if (phoneObject?.valid) {
-    errors.value.phone = ''
-  } else {
-    errors.value.phone = 'Número de teléfono inválido'
-  }
 }
 
 const phoneBlur = () => {
-  showErrors.value = true
-  emit('blur')
+  emit('blur', getMergedPhoneObject.value)
 }
+
+onMounted(() => {
+  if (model.value) {
+    phone.value = model.value
+  }
+})
 </script>
 
 <template>
@@ -115,21 +120,14 @@ const phoneBlur = () => {
         :valid-characters-only="true"
         :default-country="country"
         :auto-default-country="false"
-        :auto-format="false"
+        :auto-format="true"
         :required="required"
         :disabled="disabled"
         @country-changed="countryChanged"
-        @input="phoneInput"
+        @on-input="phoneInput"
         @validate="phoneValidate"
         @blur="phoneBlur"
     />
-
-    <div
-        v-if="errorMessage || (errors.phone && showErrors)"
-        class="text-sm text-red-500 mt-1"
-    >
-      {{ errorMessage || errors.phone }}
-    </div>
   </div>
 </template>
 
