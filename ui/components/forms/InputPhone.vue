@@ -93,8 +93,8 @@ const phoneBlur = () => {
 }
 
 onMounted(() => {
-  if (model.value) {
-    phone.value = model.value
+  if (phone.value) {
+    model.value = phone.value
   }
 })
 </script>
