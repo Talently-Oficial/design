@@ -79,7 +79,7 @@ const props = defineProps({
 			*/
 	},
 })
-const emit = defineEmits(['iframe-loaded', 'profile-viewed', 'event-viewed', 'date-selected', 'scheduled'])
+const emit = defineEmits(['script-loaded', 'iframe-loaded', 'profile-viewed', 'event-viewed', 'date-selected', 'scheduled'])
 
 const loading = ref(true)
 const urlCalendarFinal = ref('')
@@ -89,6 +89,8 @@ const isEvent = (e) => {
 }
 
 const addEvents = () => {
+  emit('script-loaded')
+
 	const iframe = document.querySelector(`#${props.id} iframe`)
 
 	if (iframe) {
