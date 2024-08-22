@@ -33,13 +33,13 @@ const props = defineProps({
     <template v-if="props.type === 'iso'">
       <img
           v-if="!props.dark"
-          src="https://d1hazhe1glojgw.cloudfront.net/talently-logo-iso.svg"
+          src="https://d1hazhe1glojgw.cloudfront.net/talently-iso_1724347624481.svg"
           alt="Talently"
           class="w-full h-auto"
       >
       <img
           v-else
-          src="https://d1hazhe1glojgw.cloudfront.net/talently-logo-iso-white.svg"
+          src="https://d1hazhe1glojgw.cloudfront.net/talently-iso-white_1724347624480.svg"
           alt="Talently"
           class="w-full h-auto"
       >
