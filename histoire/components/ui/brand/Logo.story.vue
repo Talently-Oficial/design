@@ -36,7 +36,7 @@
       </template>
     </Variant>
 
-    <Variant title="Default dark" icon="vscode-icons:file-type-vue">
+    <Variant title="Iso dark" icon="vscode-icons:file-type-vue">
       <div class="bg-neutral-700 p-3 rounded">
         <ULogo class="w-9" type="iso" dark />
       </div>
