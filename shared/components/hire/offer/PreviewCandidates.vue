@@ -6,20 +6,20 @@ const props = defineProps<{
 }>()
 
 const listUser = [
-  'https://d1hazhe1glojgw.cloudfront.net/user-4_1720469756315.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-1_1720469756314.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-3_1720469756315.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-7_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-2_1720469756315.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-5_1720469756315.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-6_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-9_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-8_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-10_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-12_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-11_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-14_1720469756316.png',
-  'https://d1hazhe1glojgw.cloudfront.net/user-13_1720469756316.png',
+  'https://cdn.talently.tech/user-4_1720469756315.png',
+  'https://cdn.talently.tech/user-1_1720469756314.png',
+  'https://cdn.talently.tech/user-3_1720469756315.png',
+  'https://cdn.talently.tech/user-7_1720469756316.png',
+  'https://cdn.talently.tech/user-2_1720469756315.png',
+  'https://cdn.talently.tech/user-5_1720469756315.png',
+  'https://cdn.talently.tech/user-6_1720469756316.png',
+  'https://cdn.talently.tech/user-9_1720469756316.png',
+  'https://cdn.talently.tech/user-8_1720469756316.png',
+  'https://cdn.talently.tech/user-10_1720469756316.png',
+  'https://cdn.talently.tech/user-12_1720469756316.png',
+  'https://cdn.talently.tech/user-11_1720469756316.png',
+  'https://cdn.talently.tech/user-14_1720469756316.png',
+  'https://cdn.talently.tech/user-13_1720469756316.png',
 ]
 
 const users = ref([])
