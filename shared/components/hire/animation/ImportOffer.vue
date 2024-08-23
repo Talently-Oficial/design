@@ -56,21 +56,21 @@
         </div>
       </div>
 
-      <img src="https://d1hazhe1glojgw.cloudfront.net/bg-7_1720992427971.png" class="magic-dust scale-80 absolute inset-0" alt="bg ai">
+      <img src="https://cdn.talently.tech/bg-7_1720992427971.png" class="magic-dust scale-80 absolute inset-0" alt="bg ai">
 
       <div class="stars-ai absolute inset-0">
-        <img src="https://d1hazhe1glojgw.cloudfront.net/star_1721066899044.svg" alt="star ai">
-        <img src="https://d1hazhe1glojgw.cloudfront.net/star_1721066899044.svg" alt="star ai">
-        <img src="https://d1hazhe1glojgw.cloudfront.net/star_1721066899044.svg" alt="star ai">
+        <img src="https://cdn.talently.tech/star_1721066899044.svg" alt="star ai">
+        <img src="https://cdn.talently.tech/star_1721066899044.svg" alt="star ai">
+        <img src="https://cdn.talently.tech/star_1721066899044.svg" alt="star ai">
       </div>
     </div>
 
     <div class="border-progress opacity-50"></div>
 
     <div class="w-14 -space-y-5">
-      <img src="https://d1hazhe1glojgw.cloudfront.net/pila_1_1721137299108.svg" alt="server" class="relative z-20">
-      <img src="https://d1hazhe1glojgw.cloudfront.net/pila_1_1721137299108.svg" alt="server" class="relative z-10">
-      <img src="https://d1hazhe1glojgw.cloudfront.net/pila_1_1721137299108.svg" alt="server" class="relative z-0">
+      <img src="https://cdn.talently.tech/pila_1_1721137299108.svg" alt="server" class="relative z-20">
+      <img src="https://cdn.talently.tech/pila_1_1721137299108.svg" alt="server" class="relative z-10">
+      <img src="https://cdn.talently.tech/pila_1_1721137299108.svg" alt="server" class="relative z-0">
     </div>
   </div>
 </template>
