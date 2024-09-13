@@ -1,5 +1,5 @@
 <template>
-  <div class="content leading-relaxed">
+  <div class="content">
     <slot />
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
   h6 {
     margin: 0 0 0.7em;
     line-height: 1.35;
-    @apply text-gray-800;
+    @apply text-neutral-900 font-bold;
   }
 
   h1 {
@@ -101,6 +101,10 @@ export default {
     margin-bottom: 1.5em;
   }
 
+	ol {
+		list-style: decimal;
+	}
+
   ul {
     list-style: disc;
   }
@@ -160,13 +164,12 @@ export default {
 
   blockquote {
     font-style: italic;
-    font-size: 1.55em;
-    line-height: 1.6em;
+    font-size: 1.1em;
     margin: 1.5em 0;
     font-weight: 500;
-    @apply text-primary-500;
+    @apply bg-primary-50 rounded-lg p-4;
     @media (min-width: 1060px) {
-      font-size: 1.45em;
+      font-size: 1.2em;
       margin: 2.5em 0;
     }
   }
@@ -174,7 +177,49 @@ export default {
   a {
     text-decoration: underline;
     font-weight: 600;
-    @apply text-primary-400;
+    @apply text-primary-600;
+  }
+
+  pre {
+    font-family: monospace;
+    font-size: 0.9em;
+    background-color: #f5f5f5;
+    padding: 1em;
+    border-radius: 4px;
+
+    code {
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+      font-size: 1em;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    @apply text-left;
+
+    thead {
+      @apply text-left;
+
+      th {
+        @apply text-left text-gray-800 font-bold py-2 px-4;
+        background-color: #f5f5f5;
+        border-bottom: 1px solid #e5e5e5;
+      }
+    }
+
+    tbody {
+      tr {
+        @apply border-b border-gray-200;
+
+        td {
+          @apply py-2 px-4;
+          border-bottom: 1px solid #e5e5e5;
+        }
+      }
+    }
   }
 }
 </style>
