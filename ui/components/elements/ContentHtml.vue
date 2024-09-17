@@ -25,7 +25,7 @@ export default {
   h6 {
     margin: 0 0 0.7em;
     line-height: 1.35;
-    @apply text-neutral-900 font-bold;
+    @apply text-neutral-700 font-bold;
   }
 
   h1 {
