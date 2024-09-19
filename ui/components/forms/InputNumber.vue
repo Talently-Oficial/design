@@ -1,12 +1,11 @@
 <script setup>
 import {
-  boxInputStyles,
-  inputStyles,
   dangerColor,
   defaultColor,
   successColor,
   warningColor,
 } from './input-styles'
+import UInput from '#ui/components/forms/Input.vue'
 
 const props = defineProps({
   modelValue: {
@@ -104,8 +103,8 @@ const showInputNumber = computed(() => {
 
 const colorButton = computed(() => {
   return (val) => {
-    if (value.value === val) return 'border-primary-500 bg-primary-500 bg-opacity-5 text-primary-500'
-    return 'border bg-white hover:border-primary-500'
+    if (value.value === val) return 'primary'
+    return 'white'
   }
 })
 
@@ -150,88 +149,80 @@ const onMoreThan5 = () => {
 
     <div class="flex gap-2">
       <template v-if="props.type === 'grid'">
-        <div class="bg-white">
           <UButton
               type="button"
+              size="lg"
               :color="colorButton(1)"
-              size="px-3.5 py-3 text-sm"
               @click="changeNumberWithButton(1)"
           >
             1
           </UButton>
-        </div>
-        <div class="bg-white">
+
           <UButton
               type="button"
+              size="lg"
               :color="colorButton(2)"
-              size="px-3.5 py-3 text-sm"
               @click="changeNumberWithButton(2)"
           >
             2
           </UButton>
-        </div>
-        <div class="bg-white">
+
           <UButton
               type="button"
+              size="lg"
               :color="colorButton(3)"
-              size="px-3.5 py-3 text-sm"
               @click="changeNumberWithButton(3)"
           >
             3
           </UButton>
-        </div>
-        <div class="bg-white">
+
           <UButton
               type="button"
+              size="lg"
               :color="colorButton(4)"
-              size="px-3.5 py-3 text-sm"
               @click="changeNumberWithButton(4)"
           >
             4
           </UButton>
-        </div>
-        <div class="bg-white">
+
           <UButton
               type="button"
+              size="lg"
               :color="colorButton(5)"
-              size="px-3.5 py-3 text-sm"
               @click="changeNumberWithButton(5)"
           >
             5
           </UButton>
-        </div>
+
         <div
             v-if="!showInputNumber"
             class="bg-white"
         >
           <UButton
               type="button"
-              color="border bg-white hover:border-primary-500"
-              size="px-3.5 py-3 text-sm"
+              color="white"
+              size="lg"
               @click="onMoreThan5"
           >
             Más
           </UButton>
         </div>
       </template>
+
       <div
           v-if="showInputNumber"
           :class="props.type === 'grid' ? 'inline' : 'w-full h-full'"
       >
-        <div
-            class="h-full"
-            :class="[colorInput, boxInputStyles({ disabled })]"
-        >
-          <input
+          <UInput
               :id="id"
               ref="inputForm"
               v-model="value"
               type="number"
+              size="lg"
               :tabindex="tabindex"
               :placeholder="placeholder"
               :required="required"
               :disabled="disabled"
-              :class="[inputStyles({ size, disabled }), hideArrows && 'number-input-hide-arrows']"
               :min="min"
               :max="max"
               :step="step"
@@ -240,7 +231,6 @@ const onMoreThan5 = () => {
               @paste="onPaste"
               @change="onChange"
           />
-        </div>
       </div>
     </div>
 

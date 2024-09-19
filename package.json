@@ -8,6 +8,6 @@
     "nuxt": "^3.10.3"
   },
   "dependencies": {
-    "@nuxt/ui": "^2.14.1"
+    "@nuxt/ui": "^2.16.0"
   }
 }
