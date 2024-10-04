@@ -47,11 +47,11 @@ const props = defineProps({
 		type: String,
 		default: 'md',
 	},
-	maxlength: {
+	maxLength: {
 		type: Number,
 		default: null,
 	},
-	minlength: {
+	minLength: {
 		type: Number,
 		default: null,
 	},
@@ -100,38 +100,6 @@ const colorInput = computed(() => {
 	return defaultColor
 })
 
-const showCounter = computed(() => {
-	return props.minlength !== null || props.maxlength !== null
-})
-
-const validatorCount = computed(() => {
-	if (props.minlength && props.maxlength) {
-		return {
-			color: 'text-red-500',
-			valid: true,
-		}
-	}
-
-	if (props.minlength === null && props.maxlength) {
-		return {
-			color: 'text-red-500',
-			valid: true,
-		}
-	}
-
-	if (props.maxlength === null && props.minlength) {
-		return {
-			color: 'text-red-500',
-			valid: true,
-		}
-	}
-
-	return {
-		color: '',
-		valid: true,
-	}
-})
-
 const value = computed({
 	get() {
 		return props.modelValue
@@ -141,6 +109,50 @@ const value = computed({
 		emit('input', value)
 		emit('validation', value)
 	},
+})
+
+const showCounterMax = computed(() => {
+  return props.maxLength && props.minLength === null
+})
+
+const showCounterMin = computed(() => {
+  if (props.minLength && props.maxLength === null) {
+    return props.minLength > value.value.length
+  }
+
+  return false
+})
+
+const showCounterRange = computed(() => {
+  return props.minLength && props.maxLength
+})
+
+const getTextMaxLength = computed(() => {
+  const color = ''
+
+  return $t('Caracteres máximos {count} de {max}', {
+    count: `<span class="${color}">${value.value.length}</span>`,
+    max: props.maxLength
+  })
+})
+
+const getTextMinLength = computed(() => {
+  let color = 'text-red-500'
+
+  const porcentaje = Math.round((value.value.length / props.minLength) * 100)
+
+  if (porcentaje >= 60 && porcentaje < 100) {
+    color = 'text-orange-500'
+  }
+
+  if (porcentaje >= 100) {
+    color = 'text-green-500'
+  }
+
+  return $t('Caracteres mínimos {count} de {min}', {
+    count: `<span class="${color}">${value.value.length}</span>`,
+    min: props.minLength
+  })
 })
 
 const setPositionHeader = () => {
@@ -180,38 +192,17 @@ onMounted(() => {
 			/>
 		</div>
 
-		<div
-			v-if="showCounter"
-			class="mt-1.5 flex items-center justify-between text-gray-600"
-		>
-			<div class="text-xs">
-				<span v-if="minlength && maxlength">
-					{{
-						$t('Entre {min} y {max} caracteres', {
-							min: minlength,
-							max: maxlength,
-						})
-					}}.
-				</span>
+		<div class="mt-1.5 text-right text-gray-600 text-xs italic" v-if="showCounterMax" v-html="getTextMaxLength" />
 
-				<span v-if="minlength === null && maxlength">
-					{{ $t('Máximo de {max} caracteres', { max: maxlength }) }}.
-				</span>
+		<div class="mt-1.5 text-right text-gray-600 text-xs italic" v-if="showCounterMin" v-html="getTextMinLength" />
 
-				<span v-if="maxlength === null && minlength">
-					{{ $t('Mínimo de {min} caracteres', { min: minlength }) }}.
-				</span>
-			</div>
-
-			<div class="text-xs">
-				<span
-					v-if="false"
-					:class="validatorCount.color"
-				>
-					{{ validatorCount.valid }}
-				</span>
-				<span>{{ value.length }}{{ maxlength ? `/${maxlength}` : '' }}</span>
-			</div>
+    <div class="mt-1.5 text-right text-gray-600 text-xs italic" v-if="showCounterRange">
+      {{
+            $t('Caracteres entre {min} y {max}', {
+              min: minLength,
+              max: maxLength,
+            })
+        }}
 		</div>
 
 		<div
