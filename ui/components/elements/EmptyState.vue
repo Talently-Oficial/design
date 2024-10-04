@@ -11,11 +11,11 @@
       </slot>
     </div>
 
-    <h3 v-if="props.title" class="text-neutral-700 font-semibold mb-1 text-lg">
+    <h3 v-if="props.title" class="text-primary-700 font-medium mb-1">
       {{ props.title }}
     </h3>
 
-    <p v-if="props.description" class="text-gray-800 text-sm mb-2">
+    <p v-if="props.description" class="text-gray-600 text-sm mb-2">
       {{ props.description }}
     </p>
 
