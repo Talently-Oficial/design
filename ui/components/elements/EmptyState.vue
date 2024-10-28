@@ -1,23 +1,23 @@
 <template>
   <div class="text-center">
-    <div class="mb-5">
+    <div class="mb-5" v-if="showGraphic">
       <slot name="graphic">
-        <div
-            class="rounded-full flex items-center justify-center m-auto w-18 h-18 bg-opacity-10"
-            :class="color"
-        >
-          <UIcon :name="props.icon" class=" w-6 h-6"/>
-        </div>
+          <div
+              class="rounded-full flex items-center justify-center m-auto w-18 h-18 bg-opacity-10"
+              :class="color"
+          >
+            <UIcon :name="props.icon" class=" w-6 h-6"/>
+          </div>
       </slot>
     </div>
 
-    <h3 v-if="props.title" class="text-primary-700 font-medium mb-1">
+    <h3 v-if="props.title" class="text-gray-700 font-bold mb-1">
       {{ props.title }}
     </h3>
 
-    <p v-if="props.description" class="text-gray-600 text-sm mb-2">
+    <div v-if="props.description" class="text-gray-600 text-sm mb-2">
       {{ props.description }}
-    </p>
+    </div>
 
     <slot />
   </div>
@@ -35,6 +35,10 @@ const props = defineProps({
     type: String,
     required: false,
     default: "i-ic-twotone-inbox",
+  },
+  showGraphic: {
+    type: Boolean,
+    default: true,
   },
   title: {
     type: String,
