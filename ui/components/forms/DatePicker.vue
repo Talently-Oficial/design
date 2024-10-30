@@ -45,7 +45,6 @@ const date = computed({
       transparent
       borderless
       :attributes="attrs"
-      is-dark="system"
       title-position="left"
       trim-weeks
       :first-day-of-week="2"
