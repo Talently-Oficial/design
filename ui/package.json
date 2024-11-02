@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
-    "v-calendar": "^3.1.2",
     "vue-multiselect": "^3.0.0",
     "vue-slider-component": "4.1.0-beta.7",
     "vue-strapi-blocks-renderer": "^0.2.0",
     "vue-tel-input": "^9.1.4",
     "vue3-editor": "^0.1.1"
+  },
+  "devDependencies": {
+    "vue-datepicker-next": "^1.0.3"
   }
 }
