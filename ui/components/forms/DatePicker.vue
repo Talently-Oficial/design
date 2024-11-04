@@ -26,6 +26,14 @@ const props = defineProps({
     type: String,
     default: 'date', // date, month, year
   },
+  disabledDate: {
+    type: Function,
+    default: () => false
+  },
+  disabledTime: {
+    type: Function,
+    default: () => false
+  }
 })
 
 const emit = defineEmits(['change', 'clear','open', 'close'])
@@ -51,20 +59,22 @@ const close = () => {
 <template>
   <DatePicker
       v-model:value="model"
+      class="ui-datepicker w-full min-w-full"
       data-cy="date-picker"
       :value-type="props.valueType"
       :format="props.format"
       :type="props.type"
-      class="ui-datepicker w-full min-w-full"
+      :disabled="props.disabled"
+      :lang="lang"
+      :disabled-date="props.disabledDate"
+      :disabled-time="props.disabledTime"
       @change="change"
       @clear="clear"
       @open="open"
       @close="close"
-      :disabled="props.disabled"
-      :lang="lang"
   >
     <template #icon-calendar>
-      <UIcon name="i-material-symbols-calendar-month-outline"/>
+      <UIcon name="i-material-symbols-calendar-month-outline"  class="w-5 h-5" />
     </template>
 
     <template #input="{ value }">
@@ -77,6 +87,11 @@ const close = () => {
             :placeholder="placeholder"
             :model-value="value"
             readonly
+            :ui="{
+              padding: {
+                md: 'pl-9',
+              }
+            }"
         />
       </slot>
     </template>
@@ -134,5 +149,14 @@ const close = () => {
   .cell:hover {
     @apply text-primary-500 bg-primary-100 bg-opacity-30;
   }
+}
+
+.mx-icon-calendar {
+  right: initial;
+  left: 9px;
+}
+
+.mx-input-wrapper:hover .mx-icon-clear + .mx-icon-calendar {
+  display: block;
 }
 </style>
