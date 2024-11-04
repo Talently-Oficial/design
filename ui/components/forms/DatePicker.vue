@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import DatePicker from 'vue-datepicker-next'
 import UInput from '#ui/components/forms/Input.vue'
-import lang from 'vue-datepicker-next/locale/es'
 
 const model = defineModel({default: null})
 
@@ -33,7 +32,11 @@ const props = defineProps({
   disabledTime: {
     type: Function,
     default: () => false
-  }
+  },
+	lang: {
+		type: String,
+		default: null,
+	},
 })
 
 const emit = defineEmits(['change', 'clear','open', 'close'])
@@ -65,7 +68,7 @@ const close = () => {
       :format="props.format"
       :type="props.type"
       :disabled="props.disabled"
-      :lang="lang"
+      :lang="props.lang"
       :disabled-date="props.disabledDate"
       :disabled-time="props.disabledTime"
       @change="change"
