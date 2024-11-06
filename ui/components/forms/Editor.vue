@@ -181,7 +181,7 @@ onMounted(() => {
 			</ULabel>
 		</slot>
 
-		<div :class="[colorInput, boxInputStyles({ disabled })]">
+		<div :class="[colorInput, boxInputStyles({ disabled })]" class="items-stretch">
 			<VueEditor
 				v-model="value"
 				:editor-toolbar="editorToolbar"
@@ -215,88 +215,102 @@ onMounted(() => {
 </template>
 
 <style>
-.ui-editor.quillWrapper {
-  > .ql-snow.ql-toolbar {
-    padding: 4px;
-    border: 0;
-    border-bottom: 1px solid theme('colors.gray.300');
-    top: 0;
-    background: #fefefe;
-    z-index: 10;
-    @apply rounded-t;
+.ui-editor {
+  &.quillWrapper {
+    display: flex;
+    flex-direction: column;
 
-    .ql-formats {
-      margin: 0;
+    .ql-snow.ql-toolbar {
+      padding: 4px;
+      border: 0;
+      border-bottom: 1px solid theme('colors.gray.300');
+      top: 0;
+      background: #fefefe;
+      z-index: 10;
+      @apply rounded-t;
+
+      .ql-formats {
+        margin: 0;
+      }
+    }
+
+    .ql-snow .ql-toolbar button,
+    .ql-snow.ql-toolbar button {
+      padding: 9px 8px;
+      width: initial;
+      height: initial;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .ql-toolbar.ql-snow .ql-picker-label {
+      border: 0;
+    }
+
+    .ql-snow .ql-color-picker .ql-picker-label,
+    .ql-snow .ql-icon-picker .ql-picker-label {
+      padding: 7px 8px;
+      line-height: 1;
+    }
+
+    .ql-container.ql-snow {
+      border: 0;
+    }
+
+    .ql-snow .ql-picker.ql-header {
+      top: 6px;
     }
   }
 
-  .ql-snow .ql-toolbar button,
-  .ql-snow.ql-toolbar button {
-    padding: 9px 8px;
-    width: initial;
-    height: initial;
-
-    svg {
-      width: 18px;
-      height: 18px;
+    .ql-editor.ql-blank:before {
+      font-style: normal;
+      left: 15px;
+      pointer-events: none;
+      position: absolute;
+      right: 15px;
+      @apply text-gray-400;
     }
-  }
-
-  .ql-toolbar.ql-snow .ql-picker-label {
-    border: 0;
-  }
-
-  .ql-snow .ql-color-picker .ql-picker-label,
-  .ql-snow .ql-icon-picker .ql-picker-label {
-    padding: 7px 8px;
-    line-height: 1;
-  }
-
-  .ql-container.ql-snow {
-    border: 0;
-  }
-
-  .ql-snow .ql-picker.ql-header {
-    top: 6px;
-  }
 }
 
-.content-editor,
-.quillWrapper .ql-editor {
-  font-family: 'Inter', Helvetica, Arial, sans-serif;
+  .content-editor,
+  .quillWrapper .ql-editor {
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
 
-  ol {
-    padding-left: 1.5em;
-    list-style: decimal;
+    ol {
+      padding-left: 1.5em;
+      list-style: decimal;
 
-    li {
-      padding-left: 0;
-    }
-  }
-
-  ul {
-    padding-left: 1.5em;
-    list-style: disc;
-
-    li {
-      padding-left: 0;
-
-      &:not(.ql-direction-rtl) {
+      li {
         padding-left: 0;
       }
     }
-  }
 
-  img {
-    max-width: 100%;
-  }
+    ul {
+      padding-left: 1.5em;
+      list-style: disc;
 
-  p {
-    margin: 13px 0;
+      li {
+        padding-left: 0;
 
-    &:first-child {
-      margin-top: 0;
+        &:not(.ql-direction-rtl) {
+          padding-left: 0;
+        }
+      }
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    p {
+      margin: 13px 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
     }
   }
-}
 </style>
