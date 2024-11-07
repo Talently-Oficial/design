@@ -15,5 +15,8 @@
     "vue-strapi-blocks-renderer": "^0.2.0",
     "vue-tel-input": "^9.1.4",
     "vue3-editor": "^0.1.1"
+  },
+  "devDependencies": {
+    "vue-datepicker-next": "^1.0.3"
   }
 }

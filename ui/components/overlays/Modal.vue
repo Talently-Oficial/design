@@ -45,9 +45,8 @@ const props = defineProps({
     type: Object,
     default: () => (
         {
-          divide : 'divide-y-0',
-          header: {padding: 'pb-0 sm:pb-0'},
-          footer: {padding: 'pt-0 sm:pt-0'}
+          header: { padding: 'p-3 sm:py-4' },
+          footer: { padding: 'p-3 sm:py-4' }
         }
     ),
   },
@@ -59,6 +58,10 @@ const props = defineProps({
     type: String,
     default: 'Cancelar',
   },
+  cancelClass: {
+    type: String,
+    default: '',
+  },
   cancelHandler: {
     type: Function,
     default: null
@@ -66,6 +69,10 @@ const props = defineProps({
   okText: {
     type: String,
     default: 'Aceptar',
+  },
+  okClass: {
+    type: String,
+    default: '',
   },
   okColor: {
     type: String,
@@ -89,7 +96,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'cancel', 'ok'])
 const model = defineModel()
 
 const closeModalButton = () => {
@@ -105,15 +112,22 @@ const defaultCancelHandler = () => {
   }
   model.value = false
   emit('close', 'cancel')
+  emit('cancel')
 }
 
 const defaultOkHandler = () => {
+  if (props.okIdForm && props.okTypeButton === 'submit') {
+    return
+  }
+
   if (props.okHandler) {
     props.okHandler()
     return
   }
+
   model.value = false
   emit('close', 'ok')
+  emit('ok')
 }
 </script>
 
@@ -132,7 +146,7 @@ const defaultOkHandler = () => {
         <slot name="header">
           <div class="flex items-center justify-between">
             <slot name="title">
-              <h2 class="font-semibold">{{ props.title }}</h2>
+              <h2 class="font-semibold text-gray-800">{{ props.title }}</h2>
             </slot>
 
             <button
@@ -142,9 +156,8 @@ const defaultOkHandler = () => {
                 :disabled="props.okLoading"
             >
               <UIcon
-                  class="text-xl leading-none"
+                  class="text-xl leading-none text-gray-800"
                   name="i-heroicons-x-mark"
-                  size="30"
               />
             </button>
           </div>
@@ -163,6 +176,7 @@ const defaultOkHandler = () => {
                 size="md"
                 @click="defaultCancelHandler"
                 :disabled="props.okLoading"
+                :class="props.cancelClass"
             >
               {{ props.cancelText }}
             </Button>
@@ -174,6 +188,7 @@ const defaultOkHandler = () => {
                 :color="props.okColor"
                 @click="defaultOkHandler"
                 :loading="props.okLoading"
+                :class="props.okClass"
             >
               {{ props.okText }}
             </Button>
