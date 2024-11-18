@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content whitespace-pre-line">
     <slot />
   </div>
 </template>
