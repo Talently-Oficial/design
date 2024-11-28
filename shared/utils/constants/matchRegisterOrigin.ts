@@ -1,0 +1,8 @@
+export const ID_MATCH_REGISTER_ORIGIN_REGULAR: number = 1
+
+export const ID_MATCH_REGISTER_ORIGIN_HUNTING: number = 2
+
+export const MATCH_REGISTER_ORIGIN_TYPES = {
+	[ID_MATCH_REGISTER_ORIGIN_REGULAR]: 'regular',
+	[ID_MATCH_REGISTER_ORIGIN_HUNTING]: 'hunting',
+}
