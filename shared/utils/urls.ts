@@ -24,7 +24,11 @@ export const filterUtmFromObject = (query: LocationQuery): UtmParams => {
     const utmKeys: UtmKey[] = ['utm_id', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
 
     for (const key of utmKeys) {
-        if (query[key]) utmParams[key] = query[key] as string
+        if (query[key]) {
+            utmParams[key] = Array.isArray(query[key])
+                ? query[key][query[key].length - 1]
+                : query[key] as string
+        }
     }
 
     return utmParams
