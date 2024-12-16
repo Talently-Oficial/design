@@ -1,15 +1,28 @@
 <template>
-  <div ref="v-step" :class="{ 'v-step--sticky': isSticky }" class="v-step">
+  <div
+      ref="v-step"
+      :class="[isSticky ? 'v-step--sticky' : '', stepStyle]"
+      class="v-step"
+  >
     <div class="space-y-4">
       <slot name="header">
-        <div v-if="step.header" class="v-step__header">
-          <div v-if="step.header.title" v-html="step.header.title"></div>
+        <div
+            v-if="step.header"
+            class="v-step__header"
+        >
+          <div
+              v-if="step.header.title"
+              v-html="step.header.title"
+          />
         </div>
       </slot>
 
       <slot name="content">
         <div class="v-step__content">
-          <div v-if="step.content" v-html="step.content"></div>
+          <div
+              v-if="step.content"
+              v-html="step.content"
+          />
           <div v-else>
             This is a demo step! The id of this step is v-step and it targets
             {{ step.target }}.
@@ -17,22 +30,31 @@
         </div>
       </slot>
 
-      <slot name="actions">
+      <slot
+          name="actions"
+          :is-button-enabled="isButtonEnabled"
+          :is-first="isFirst"
+          :is-last="isLast"
+          :skip="skip"
+          :previous-step="previousStep"
+          :next-step="nextStep"
+          :finish="finish"
+      >
         <div class="v-step__buttons">
           <div
               class="flex gap-2 pt-1"
               :class="{
-              'justify-end': !isButtonEnabled('buttonPrevious'),
-              'justify-between': isButtonEnabled('buttonPrevious'),
-            }"
+							'justify-end': !isButtonEnabled('buttonPrevious'),
+							'justify-between': isButtonEnabled('buttonPrevious'),
+						}"
           >
             <div>
               <UButton
                   v-if="!isLast && isButtonEnabled('buttonSkip')"
                   class="v-step__button v-step__button-skip"
                   size="sm"
-                  color="flat"
-                  @click.native.prevent="skip"
+                  variant="ghost"
+                  @click.prevent="skip"
               >
                 <span class="font-semibold"> {{ labels.buttonSkip }}</span>
               </UButton>
@@ -43,15 +65,17 @@
                   v-if="!isFirst && isButtonEnabled('buttonPrevious')"
                   class="v-step__button v-step__button-previous"
                   size="sm"
+                  variant="ghost"
                   @click.prevent="previousStep"
               >
-                <span class="font-semibold"> {{ labels.buttonPrevious }}</span>
+                <span class="font-semibold"> {{ labels.buttonPrevious }} wsd</span>
               </UButton>
 
               <UButton
                   v-if="!isLast && isButtonEnabled('buttonNext')"
                   class="v-step__button v-step__button-next"
                   size="sm"
+                  color="primary"
                   @click.prevent="nextStep"
               >
                 {{ labels.buttonNext }}
@@ -61,7 +85,8 @@
                   v-if="isLast && isButtonEnabled('buttonStop')"
                   class="v-step__button v-step__button-stop"
                   size="sm"
-                  @click.native.prevent="finish"
+                  color="primary"
+                  @click.prevent="finish"
               >
                 {{ labels.buttonStop }}
               </UButton>
@@ -71,7 +96,10 @@
       </slot>
     </div>
 
-    <div class="v-step__arrow" data-popper-arrow></div>
+    <div
+        class="v-step__arrow"
+        data-popper-arrow
+    />
   </div>
 </template>
 
@@ -145,11 +173,15 @@ export default {
     debug: {
       type: Boolean,
     },
+    stepStyle: {
+      type: String,
+      default: 'v-step--customer',
+    },
   },
   data() {
     return {
       elements: [],
-      targetElement: null,
+      targetElement: document.querySelector(this.step.target),
       observerElement: null,
       popper: null,
     }
@@ -171,8 +203,6 @@ export default {
     },
   },
   mounted() {
-    this.targetElement = document.querySelector(this.step.target)
-
     this.targetElement.classList.add(HIGHLIGHT.classes.targetActive)
 
     if (!this.params.highlight.interaction) {
@@ -182,17 +212,17 @@ export default {
   },
   unmounted() {
     this.targetElement.classList.remove(HIGHLIGHT.classes.targetActive)
-    this.targetElement.classList.remove(HIGHLIGHT.classes.targetDisabled)
+
+    if (!this.params.highlight.interaction) {
+      this.targetElement.classList.remove(HIGHLIGHT.classes.targetDisabled)
+    }
     // this.removeHighlight()
     this.removeListeners()
   },
   methods: {
     createStep() {
       if (this.debug) {
-        console.log(
-            `[Vue Tour] The target element ${this.step.target} of .v-step[id="v-step"] is:`,
-            this.targetElement
-        )
+        console.log(`[Vue Tour] The target element ${this.step.target} of .v-step[id="v-step"] is:`, this.targetElement)
       }
 
       if (this.isSticky) {
@@ -200,25 +230,16 @@ export default {
       } else if (this.targetElement) {
         this.enableScrolling()
         // this.createHighlight()
+        this.popper = createPopper(this.targetElement, this.$refs['v-step'], this.params)
 
-        this.popper = createPopper(
-            this.targetElement,
-            this.$refs['v-step'],
-            this.params
-        )
-
-        this.elements = this.popper.state.scrollParents.reference.filter(
-            (element) => element instanceof HTMLElement
-        )
+        this.elements = this.popper.state.scrollParents.reference.filter((element) => element instanceof HTMLElement)
 
         this.addListeners()
 
         this.$emit('mounted', this.targetElement)
       } else {
         if (this.debug) {
-          console.error(
-              `[Vue Tour] The target element ${this.step.target} of .v-step[id="v-step"] does not exist!`
-          )
+          console.error(`[Vue Tour] The target element ${this.step.target} of .v-step[id="v-step"] does not exist!`)
         }
         this.$emit('targetNotFound', this.step)
         if (this.stopOnFail) {
@@ -237,9 +258,7 @@ export default {
     isHighlightEnabled() {
       if (this.debug) {
         console.log(
-            `[Vue Tour] Highlight is ${
-                this.params.highlight ? 'enabled' : 'disabled'
-            } for .v-step[id="v-step"]`
+            `[Vue Tour] Highlight is ${this.params.highlight ? 'enabled' : 'disabled'} for .v-step[id="v-step"]`,
         )
       }
       return this.params.highlight
@@ -251,9 +270,7 @@ export default {
       if (this.isHighlightEnabled()) {
         document.body.classList.add(HIGHLIGHT.classes.active)
 
-        const transitionValue = window
-            .getComputedStyle(this.targetElement)
-            .getPropertyValue('transition')
+        const transitionValue = window.getComputedStyle(this.targetElement).getPropertyValue('transition')
 
         // Make sure our background doesn't flick on transitions
         if (transitionValue !== 'all 0s ease 0s') {
@@ -276,19 +293,14 @@ export default {
         // Remove our transition when step is finished.
         if (currentTransition.includes(HIGHLIGHT.transition)) {
           setTimeout(() => {
-            target.style.transition = currentTransition.replace(
-                `, ${HIGHLIGHT.transition}`,
-                ''
-            )
+            target.style.transition = currentTransition.replace(`, ${HIGHLIGHT.transition}`, '')
           }, 0)
         }
       }
     },
     isButtonEnabled(name) {
       // eslint-disable-next-line no-prototype-builtins
-      return this.params.enabledButtons.hasOwnProperty(name)
-          ? this.params.enabledButtons[name]
-          : true
+      return this.params.enabledButtons.hasOwnProperty(name) ? this.params.enabledButtons[name] : true
     },
     addListeners() {
       if (this.isHighlightEnabled()) {
@@ -333,10 +345,13 @@ export default {
 <style lang="postcss" scoped>
 .v-step {
   background: white;
-  max-width: 330px;
+
   border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-  rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  box-shadow:
+      rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+      rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+      rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+      rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   pointer-events: auto;
   z-index: 10000;
   padding: 1rem;
@@ -389,5 +404,9 @@ export default {
 
 .v-step[data-popper-placement^='left'] > .v-step__arrow {
   right: -5px;
+}
+
+.v-step--customer {
+  max-width: 330px;
 }
 </style>

@@ -1,52 +1,36 @@
 <template>
   <div class="v-tour">
     <svg
-      v-if="isRunning && customOptions.highlight.enabled"
-      class="fixed w-full h-full top-0 left-0 pointer-events-none"
-      style="z-index: 9999"
-      @click="clickOverlay"
+        v-if="isRunning && customOptions.highlight.enabled"
+        class="fixed w-full h-full top-0 left-0 pointer-events-none"
+        style="z-index: 9999"
+        @click="clickOverlay"
     >
       <defs>
         <clipPath id="v-tour-mask">
-          <path fill-rule="evenodd" clip-rule="evenodd" :d="styleMsk.path" />
+          <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              :d="styleMsk.path"
+          />
         </clipPath>
       </defs>
 
       <rect
-        x="0"
-        y="0"
-        :width="styleMsk.width"
-        :height="styleMsk.height"
-        fill="black"
-        class="pointer-events-auto"
-        fill-opacity="0.3"
-        clip-path="url(#v-tour-mask)"
+          x="0"
+          y="0"
+          :width="styleMsk.width"
+          :height="styleMsk.height"
+          fill="black"
+          class="pointer-events-auto"
+          fill-opacity="0.3"
+          clip-path="url(#v-tour-mask)"
       />
     </svg>
 
     <slot
-      :current-step="currentStep"
-      :steps="steps"
-      :previous-step="previousStep"
-      :next-step="nextStep"
-      :stop="stop"
-      :skip="skip"
-      :finish="finish"
-      :is-first="isFirst"
-      :is-last="isLast"
-      :labels="customOptions.labels"
-      :enabled-buttons="customOptions.enabledButtons"
-      :highlight="customOptions.highlight"
-      :debug="customOptions.debug"
-      @mounted="mountedStep"
-      @scroll="overlayStep"
-      @resize="overlayStep"
-    >
-      <!--Default slot {{ currentStep }}-->
-      <VStep
-        v-if="steps[currentStep]"
-        :key="currentStep"
-        :step="steps[currentStep]"
+        :current-step="currentStep"
+        :steps="steps"
         :previous-step="previousStep"
         :next-step="nextStep"
         :stop="stop"
@@ -57,12 +41,33 @@
         :labels="customOptions.labels"
         :enabled-buttons="customOptions.enabledButtons"
         :highlight="customOptions.highlight"
-        :stop-on-fail="customOptions.stopOnTargetNotFound"
         :debug="customOptions.debug"
         @mounted="mountedStep"
         @scroll="overlayStep"
         @resize="overlayStep"
-        @targetNotFound="$emit('targetNotFound', $event)"
+    >
+      <!--Default slot {{ currentStep }}-->
+      <VStep
+          v-if="steps[currentStep]"
+          :key="currentStep"
+          :step="steps[currentStep]"
+          :previous-step="previousStep"
+          :next-step="nextStep"
+          :stop="stop"
+          :skip="skip"
+          :finish="finish"
+          :is-first="isFirst"
+          :is-last="isLast"
+          :labels="customOptions.labels"
+          :enabled-buttons="customOptions.enabledButtons"
+          :highlight="customOptions.highlight"
+          :stop-on-fail="customOptions.stopOnTargetNotFound"
+          :debug="customOptions.debug"
+          :step-style="stepStyle"
+          @mounted="mountedStep"
+          @scroll="overlayStep"
+          @resize="overlayStep"
+          @target-not-found="$emit('targetNotFound', $event)"
       >
         <!--<div v-if="index === 2" slot="actions">
           <a @click="nextStep">Next step</a>
@@ -75,7 +80,6 @@
 <script>
 import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, KEYS } from './constants'
 import VStep from './VStep.vue'
-import { useNuxtApp } from '#app'
 
 export default {
   name: 'VTour',
@@ -102,6 +106,10 @@ export default {
       default: () => {
         return DEFAULT_CALLBACKS
       },
+    },
+    stepStyle: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -158,18 +166,9 @@ export default {
     },
   },
   mounted() {
-    const { $tours } = useNuxtApp()
-
-    $tours[this.name] = {
-      start: this.start,
-      stop: this.stop,
-      skip: this.skip,
-      finish: this.finish,
-      previousStep: this.previousStep,
-      nextStep: this.nextStep
-    }
+    this.$tours[this.name] = this
   },
-  unmounted() {
+  beforeUnmount() {
     // Remove the keyup listener if it has been defined
     if (this.customOptions.useKeyboardNavigation) {
       window.removeEventListener('keyup', this.handleKeyup)
@@ -236,13 +235,13 @@ export default {
       const step = this.steps[startStep]
 
       const process = () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            this.customCallbacks.onStart()
-            this.currentStep = startStep
-            resolve()
-          }, this.customOptions.startTimeout)
-        })
+          new Promise((resolve) => {
+            setTimeout(() => {
+              this.customCallbacks.onStart()
+              this.currentStep = startStep
+              resolve()
+            }, this.customOptions.startTimeout)
+          })
 
       if (typeof step.before !== 'undefined') {
         try {
@@ -259,11 +258,11 @@ export default {
       const futureStep = this.currentStep - 1
 
       const process = () =>
-        new Promise((resolve) => {
-          this.customCallbacks.onPreviousStep(this.currentStep)
-          this.currentStep = futureStep
-          resolve()
-        })
+          new Promise((resolve) => {
+            this.customCallbacks.onPreviousStep(this.currentStep)
+            this.currentStep = futureStep
+            resolve()
+          })
 
       if (futureStep > -1) {
         const step = this.steps[futureStep]
@@ -283,11 +282,11 @@ export default {
       const futureStep = this.currentStep + 1
 
       const process = () =>
-        new Promise((resolve, reject) => {
-          this.customCallbacks.onNextStep(this.currentStep)
-          this.currentStep = futureStep
-          resolve()
-        })
+          new Promise((resolve) => {
+            this.customCallbacks.onNextStep(this.currentStep)
+            this.currentStep = futureStep
+            resolve()
+          })
 
       if (futureStep < this.numberOfSteps && this.currentStep !== -1) {
         const step = this.steps[futureStep]
@@ -321,13 +320,19 @@ export default {
       }
       switch (e.keyCode) {
         case KEYS.ARROW_RIGHT:
-          this.isKeyEnabled('arrowRight') && this.nextStep()
+          if (this.isKeyEnabled('arrowRight')) {
+            this.nextStep()
+          }
           break
         case KEYS.ARROW_LEFT:
-          this.isKeyEnabled('arrowLeft') && this.previousStep()
+          if (this.isKeyEnabled('arrowLeft')) {
+            this.previousStep()
+          }
           break
         case KEYS.ESCAPE:
-          this.isKeyEnabled('escape') && this.stop()
+          if (this.isKeyEnabled('escape')) {
+            this.stop()
+          }
           break
       }
     },
@@ -335,9 +340,7 @@ export default {
       const { enabledNavigationKeys } = this.customOptions
 
       // eslint-disable-next-line no-prototype-builtins
-      return enabledNavigationKeys.hasOwnProperty(key)
-        ? enabledNavigationKeys[key]
-        : true
+      return enabledNavigationKeys.hasOwnProperty(key) ? enabledNavigationKeys[key] : true
     },
     clickOverlay() {
       if (this.customOptions.highlight.closeable) {
