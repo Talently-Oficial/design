@@ -1,5 +1,7 @@
 export const focusOnErrorInput = (event) => {
-    const element = document.getElementById(event.errors[0].id)
+    const id = event.errors[0].id || event.errors[0].path
+    const element = document.getElementById(id)
+
     element?.focus()
     element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
