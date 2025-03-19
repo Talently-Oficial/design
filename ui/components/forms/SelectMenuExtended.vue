@@ -12,6 +12,10 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  size: {
+    type: String,
+    default: 'md',
+  },
   searchable: {
     type: Boolean,
     default: false,
@@ -142,6 +146,7 @@ onMounted(() => {
         :searchable-placeholder="props.searchablePlaceholder"
         :search-attributes="props.searchAttributes"
         :options="options"
+        :size="props.size"
         :disabled="props.disabled"
         :clear-search-on-close="true"
         @change="changeSkills"

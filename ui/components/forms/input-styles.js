@@ -1,12 +1,12 @@
 import { cva } from 'class-variance-authority'
 
-export const defaultColor = `border-2 border-gray-200 border-opacity-80 text-gray-700 focus-within:border-primary-400`
-export const successColor = `border-2 border-green-500`
-export const warningColor = `border-2 border-yellow-500`
-export const dangerColor = `border-2 border-red-600`
+export const defaultColor = `border-gray-300 border-opacity-80 text-gray-700 focus-within:border-primary-400`
+export const successColor = `border-green-500`
+export const warningColor = `border-yellow-500`
+export const dangerColor = `border-red-600`
 
 export const boxInputStyles = cva(
-  ['border-2 flex items-center bg-white rounded-lg relative w-full'],
+  ['border flex items-center bg-white rounded-lg relative w-full'],
   {
     variants: {
       disabled: {
